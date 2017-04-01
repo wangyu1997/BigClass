@@ -17,6 +17,15 @@
         <item name="android:typeface">sans</item>
     </style>
 
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- 绿色按钮，带圆角 -->
+    <style name="GreenWithCorner" >
+        <item name="android:background">@drawable/button_selector</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+
     <style name="AppTheme.TranslucentStatus" parent="Theme.AppCompat.Light">
         <!-- Status Bar -->
         <item name="android:windowTranslucentStatus">true</item>
