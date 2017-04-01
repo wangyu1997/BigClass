@@ -10,22 +10,36 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.njtech.bigclass.clip.ClipHeaderActivity;
 import com.njtech.bigclass.utils.AppManager;
+import com.njtech.bigclass.utils.HttpUtil;
+import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UploadManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
-
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by FJS0420 on 2016/7/20.
@@ -50,6 +64,10 @@ public class MakeupinfoActivity extends AppCompatActivity {
     public static final int DISPLAY_REQ = 110;
     @BindView(R.id.updateBaseInfoProgress)
     ProgressBar updateBaseInfoProgress;
+    @BindView(R.id.button)
+    Button button;
+    @BindView(R.id.textView2)
+    TextView textView2;
     private int HEADER_FALG = 107;
 
 
@@ -65,7 +83,7 @@ public class MakeupinfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_makeupinfo);
         AppManager.getAppManager().addActivity(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS},1);
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS}, 1);
         }
         ButterKnife.bind(this);
         init();
@@ -202,6 +220,80 @@ public class MakeupinfoActivity extends AppCompatActivity {
         return dirPath;
     }
 
+    public void updateBaseInfo() {
+        if (headerUri != null) {
+            updateHeader(headerUri);
+        } else {
+            updateHttp();
+        }
+    }
+
+
+    public void updateHeader(final Uri uri) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String token = null;
+                try {
+                    token = HttpUtil.getToken("http://119.29.97.151//BigClass/token/getToken.php");//获取token接口
+                    String headerPath = getRealFilePath(uri);
+                    Log.i("json", token);
+                    if (token != null) {
+                        UploadManager uploadManager = new UploadManager();
+                        String data = headerPath;
+                        String key = null;
+                        uploadManager.put(data, key, token,
+                                new UpCompletionHandler() {
+                                    @Override
+                                    public void complete(String key, ResponseInfo info, JSONObject res) {
+                                        try {
+                                            Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res.get("key"));
+                                            //上传后返回url
+                                            String url = "http://onqif3xou.bkt.clouddn.com/" + res.get("key");
+//                                        userInfo.setFace_img(url);
+                                            Message message;
+                                            message = handler.obtainMessage();
+                                            message.obj = url;
+                                            message.what = HEADER_FALG;
+                                            message.sendToTarget();
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }, null);
+                    } else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(MakeupinfoActivity.this, "头像上传失败", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                } catch (IOException e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(MakeupinfoActivity.this, "头像上传失败", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+    }
+
+    public Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == HEADER_FALG) {
+                textView2.setText((CharSequence) msg.obj);
+                updateHttp();
+            }
+        }
+    };
+
+
     /**
      * Try to return the absolute file path from the given Uri
      *
@@ -231,4 +323,44 @@ public class MakeupinfoActivity extends AppCompatActivity {
         return data;
     }
 
+    //更新个人信息
+    public void updateHttp() {
+//        if (userInfo.rightFlag()) {
+//            Retrofit retrofit = HttpControl.getInstance().getRetrofit();
+//            UserinfoService userinfoService = retrofit.create(UserinfoService.class);
+//            userinfoService.updateBaseInfo(userInfo.getName(), userInfo.getGrade(), userInfo.getSignature(), userInfo.getSex(), userInfo.getFace_img(), userInfo.getSchool_id(), userInfo.getAcademy_id())
+//                    .subscribeOn(Schedulers.io())
+//                    .unsubscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(new Subscriber<RegisterEntity>() {
+//                        @Override
+//                        public void onCompleted() {
+//                            Toast.makeText(MakeupinfoActivity.this, "信息更新成功,请重新登录", Toast.LENGTH_SHORT).show();
+//                            updateBaseInfoProgress.setVisibility(View.GONE);
+//                            MyApplication.restartApp();
+//                        }
+//
+//                        @Override
+//                        public void onError(Throwable e) {
+//                            Toast.makeText(MakeupinfoActivity.this, "更新信息失败", Toast.LENGTH_SHORT).show();
+//                            updateBaseInfoProgress.setVisibility(View.GONE);
+//                        }
+//
+//                        @Override
+//                        public void onNext(RegisterEntity registerEntity) {
+//                            if (registerEntity.getStatus() != 1) {
+//                                onError(new Exception());
+//                            }
+//                        }
+//                    });
+//        } else {
+//            updateBaseInfoProgress.setVisibility(View.GONE);
+//        }
+    }
+
+
+    @OnClick(R.id.button)
+    public void onClick() {
+        updateBaseInfo();
+    }
 }
