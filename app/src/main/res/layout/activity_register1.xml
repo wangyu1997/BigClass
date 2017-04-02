@@ -1,31 +1,35 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto"
-                                             xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-                                             android:layout_height="match_parent" android:gravity="center_horizontal"
-                                             android:orientation="vertical" android:background="@drawable/bg"
-                                             tools:layout_editor_absoluteY="25dp"
-                                             tools:layout_editor_absoluteX="0dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="25dp"
+    android:id="@+id/regist1">
 
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="368dp"
         android:layout_height="56dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:background="@color/transprant"
         android:navigationIcon="@mipmap/nva_con"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         app:layout_scrollFlags="scroll|enterAlways"
         app:navigationIcon="@mipmap/nva_con"
-        app:popupTheme="@style/AppTheme.PopupOverlay"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintVertical_bias="0.0">
+        app:popupTheme="@style/AppTheme.PopupOverlay">
 
         <TextView
             android:layout_width="wrap_content"
@@ -37,27 +41,67 @@
             android:textColor="@color/white"
             android:textSize="18sp" />
     </android.support.v7.widget.Toolbar>
+
+    <EditText
+        android:id="@+id/edit_user"
+        android:layout_width="291dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="47dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginStart="47dp"
+        android:layout_marginTop="110dp"
+        android:ems="10"
+        android:hint="@string/username"
+        android:inputType="textPersonName"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:theme="@style/MyEditText"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+    <EditText
+        android:id="@+id/edit_passwd"
+        android:layout_width="291dp"
+        android:layout_height="43dp"
+        android:layout_marginEnd="47dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginStart="47dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/passwd"
+        android:inputType="textPassword"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:theme="@style/MyEditText"
+        app:layout_constraintLeft_toLeftOf="@+id/edit_user"
+        app:layout_constraintRight_toRightOf="@+id/edit_user"
+        app:layout_constraintTop_toBottomOf="@+id/edit_user" />
+
     <EditText
         android:id="@+id/edit_name"
         android:layout_width="140dp"
         android:layout_height="40dp"
         android:layout_marginEnd="47dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
         android:layout_marginStart="47dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="@string/name"
         android:inputType="textPersonName"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:theme="@style/MyEditText"
-        android:layout_marginLeft="0dp"
-        app:layout_constraintLeft_toLeftOf="@+id/edit_passwdconfirm"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/edit_passwdconfirm"
+        app:layout_constraintLeft_toLeftOf="@+id/edit_passwd"
         app:layout_constraintRight_toLeftOf="@+id/guideline3"
-        android:layout_marginRight="0dp" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_passwd" />
 
     <EditText
-        android:id="@+id/editText"
+        android:editable="false"
+        android:id="@+id/edit_sex"
         android:layout_width="140dp"
         android:layout_height="40dp"
         android:layout_marginEnd="47dp"
@@ -70,75 +114,41 @@
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:theme="@style/MyEditText"
+        app:layout_constraintBaseline_toBaselineOf="@+id/edit_name"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="@+id/guideline3"
-        app:layout_constraintBaseline_toBaselineOf="@+id/edit_name"
-        app:layout_constraintRight_toLeftOf="@+id/guideline2"/>
+        app:layout_constraintRight_toLeftOf="@+id/guideline2" />
+
 
     <EditText
-        android:id="@+id/edit_user"
+        android:editable="false"
+        android:id="@+id/edit_academy"
         android:layout_width="291dp"
         android:layout_height="40dp"
         android:layout_marginEnd="47dp"
-        android:layout_marginStart="47dp"
-        android:layout_marginTop="64dp"
-        android:ems="10"
-        android:hint="@string/user"
-        android:inputType="textPersonName"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        android:theme="@style/MyEditText"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        android:layout_marginRight="50dp"
-        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="50dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.428" />
-
-    <EditText
-        android:id="@+id/edit_major"
-        android:layout_width="291dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="47dp"
+        android:layout_marginRight="50dp"
         android:layout_marginStart="47dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="@string/major"
+        android:hint="@string/academy"
         android:inputType="textPersonName"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:theme="@style/MyEditText"
-        app:layout_constraintTop_toBottomOf="@+id/edit_name"
-        android:layout_marginRight="50dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="50dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_name" />
+
 
     <EditText
-        android:id="@+id/edit_passwdconfirm"
-        android:layout_width="291dp"
-        android:layout_height="43dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="@string/passwd"
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"
-        android:theme="@style/MyEditText"
-        android:layout_marginStart="47dp"
-        android:layout_marginEnd="47dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/edit_user"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="@+id/edit_user"
-        android:layout_marginRight="0dp"
-        app:layout_constraintRight_toRightOf="@+id/edit_user" />
-
-    <EditText
-        android:id="@+id/edit_verifycode"
+        android:editable="false"
+        android:id="@+id/edit_class"
         android:layout_width="294dp"
         android:layout_height="40dp"
         android:layout_marginEnd="47dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
         android:layout_marginStart="47dp"
         android:layout_marginTop="16dp"
         android:ems="10"
@@ -147,70 +157,67 @@
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:theme="@style/MyEditText"
-        app:layout_constraintTop_toBottomOf="@+id/edit_major"
-        android:layout_marginRight="50dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="50dp"
+        app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintLeft_toLeftOf="parent"
-        tools:layout_editor_absoluteY="253dp"
-        app:layout_constraintHorizontal_bias="0.428" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_academy"
+        tools:layout_editor_absoluteY="253dp" />
 
     <android.support.constraint.Guideline
+        android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/guideline"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.0"
-        />
+        app:layout_constraintGuide_percent="0.0" />
 
     <Button
-         android:id="@+id/btn_regist"
-         android:layout_width="130dp"
-         android:layout_height="wrap_content"
-         android:text="@string/next"
-         android:textSize="50px"
-         android:background="@drawable/button_selector"
-         android:layout_marginTop="8dp"
-         app:layout_constraintTop_toBottomOf="@+id/edit_verifycode"
-         android:layout_marginLeft="127dp"
-         app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/btn_next"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="127dp"
         android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/button_selector"
+        android:text="@string/next"
+        android:textSize="50px"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_class" />
 
     <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/guideline3"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="206dp"/>
+        tools:layout_editor_absoluteX="206dp"
+        tools:layout_editor_absoluteY="0dp" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="292dp"
         android:layout_height="164dp"
-        app:srcCompat="@drawable/logo"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="16dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="@+id/edit_verifycode"
         android:layout_marginLeft="0dp"
-        app:layout_constraintLeft_toLeftOf="@+id/edit_verifycode" />
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/edit_class"
+        app:layout_constraintRight_toRightOf="@+id/edit_class"
+        app:srcCompat="@drawable/logo" />
 
     <android.support.constraint.Guideline
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/guideline2"
-        app:layout_constraintGuide_begin="352dp"
-        android:orientation="vertical"/>
-
-    <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="352dp" />
+
+    <android.support.constraint.Guideline
         android:id="@+id/guideline4"
-        app:layout_constraintGuide_begin="57dp"
-        android:orientation="vertical"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="57dp" />
 
 </android.support.constraint.ConstraintLayout>

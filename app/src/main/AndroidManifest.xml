@@ -23,10 +23,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".clip.ClipHeaderActivity"></activity>
-        <activity android:name=".MakeupinfoActivity">
-
-        </activity>
-        <activity android:name=".upHeaderActivity">
-        </activity>
+        <activity android:name=".MakeupinfoActivity"></activity>
+        <activity android:name=".upHeaderActivity"></activity>
+        <activity android:name=".Regist1Activity"></activity>
+        <activity android:name=".Regist2Activity"></activity>
     </application>
 </manifest>

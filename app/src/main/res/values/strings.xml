@@ -9,11 +9,51 @@
     <string name="verifycode">验证码</string>
     <string name="passwd">密码</string>
     <string name="confirm_passwd">密码确认</string>
-    <string name="user">姓名</string>
+    <string name="username">用户名</string>
     <string name="sex">性别</string>
+    <string name="academy">学院</string>
     <string name="name">姓名</string>
     <string name="major">专业</string>
     <string name="classX">班级</string>
     <string name="regist_tool">用户注册</string>
     <string name="next">下一步</string>
+    <string name="sendverifycode">邮箱/用户名</string>
+    <string name="send">发送</string>
+    <string name="forget_tool">找回密码</string>
+    <string-array name="sex">
+        <item>♂ 男生</item>
+        <item>♀ 女生</item>
+    </string-array>
+    <string-array name="grade">
+        <item>1301</item>
+        <item>1302</item>
+        <item>1303</item>
+        <item>1304</item>
+        <item>1305</item>
+        <item>1306</item>
+        <item>1401</item>
+        <item>1402</item>
+        <item>1403</item>
+        <item>1404</item>
+        <item>1405</item>
+        <item>1406</item>
+        <item>1501</item>
+        <item>1502</item>
+        <item>1503</item>
+        <item>1504</item>
+        <item>1505</item>
+        <item>1506</item>
+        <item>1601</item>
+        <item>1602</item>
+        <item>1603</item>
+        <item>1604</item>
+        <item>1605</item>
+        <item>1606</item>
+        <item>1701</item>
+        <item>1702</item>
+        <item>1703</item>
+        <item>1704</item>
+        <item>1705</item>
+        <item>1706</item>
+    </string-array>
 </resources>

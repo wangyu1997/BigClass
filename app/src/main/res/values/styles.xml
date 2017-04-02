@@ -50,7 +50,15 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
+    <!--  控制popuWindow显示和隐藏 -->
+    <!--  这个是加入的代码 -->
+    <style name="mypopwindow_anim_style">
+        <item name="android:windowEnterAnimation">@anim/popshow_anim</item>
+        <!-- 指定显示的动画xml -->
 
+        <item name="android:windowExitAnimation">@anim/pophiden_anim</item>
+        <!-- 指定消失的动画xml -->
+    </style>
 
     <style name="noAnimation">
         <item name="android:activityOpenEnterAnimation">@null</item>

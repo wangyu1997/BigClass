@@ -64,9 +64,9 @@ public class LogActivity extends AppCompatActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_forget:
-                startActivity(new Intent(this,Regist1Activity.class));
                 break;
             case R.id.btn_regist:
+                startActivity(new Intent(this,Regist1Activity.class));
                 break;
             case R.id.btn_login:
                 break;
