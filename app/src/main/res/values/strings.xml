@@ -4,5 +4,16 @@
     <string name="regist">SIGN UP</string>
     <string name="forgetpass">忘记密码</string>
     <string name="submit">S U B M I T</string>
-
+    <string name="ok">O K</string>
+    <string name="resend">重发</string>
+    <string name="verifycode">验证码</string>
+    <string name="passwd">密码</string>
+    <string name="confirm_passwd">密码确认</string>
+    <string name="user">姓名</string>
+    <string name="sex">性别</string>
+    <string name="name">姓名</string>
+    <string name="major">专业</string>
+    <string name="classX">班级</string>
+    <string name="regist_tool">用户注册</string>
+    <string name="next">下一步</string>
 </resources>

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="47dp"
         android:layout_marginRight="47dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="40dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="密码"
@@ -24,7 +24,8 @@
         tools:layout_constraintRight_creator="1"
         android:layout_marginStart="47dp"
         android:layout_marginEnd="47dp"
-        tools:layout_constraintLeft_creator="1" />
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintHorizontal_bias="0.0" />
 
     <EditText
         android:id="@+id/edit_user"
@@ -45,7 +46,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="8dp"
-        app:layout_constraintVertical_bias="0.19"
+        app:layout_constraintVertical_bias="0.289"
         tools:layout_constraintRight_creator="1"
         android:layout_marginStart="47dp"
         android:layout_marginEnd="47dp"
@@ -80,7 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="-31dp"
-        android:layout_marginTop="9dp"
+        android:layout_marginTop="57dp"
         android:text="@string/regist"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toRightOf="@+id/btn_login"
@@ -91,8 +92,8 @@
         android:id="@+id/btn_login"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="-31dp"
-        android:layout_marginTop="9dp"
+        android:layout_marginLeft="-17dp"
+        android:layout_marginTop="57dp"
         android:text="@string/login"
         android:textSize="50px"
         android:background="@drawable/button_selector"
@@ -115,13 +116,10 @@
         app:layout_constraintRight_toRightOf="@+id/btn_regist"
         android:layout_marginLeft="0dp"
         app:layout_constraintLeft_toLeftOf="@+id/btn_login"
-        app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintTop_toTopOf="@+id/guideline"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="8dp"
-        app:layout_constraintVertical_bias="0.737"
-        tools:layout_editor_absoluteY="364dp"
-        tools:layout_editor_absoluteX="67dp" />
+        app:layout_constraintVertical_bias="0.933" />
 
 </android.support.constraint.ConstraintLayout>

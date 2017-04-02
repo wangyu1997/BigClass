@@ -24,7 +24,7 @@
             android:layout_centerInParent="true"
             android:layout_gravity="center"
             android:fontFamily="sans-serif"
-            android:text="完善个人信息"
+            android:text="上传头像"
             android:textColor="@color/white"
             android:textSize="18sp" />
     </android.support.v7.widget.Toolbar>
