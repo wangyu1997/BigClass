@@ -3,5 +3,6 @@
     <string name="login">LOG IN</string>
     <string name="regist">SIGN UP</string>
     <string name="forgetpass">忘记密码</string>
+    <string name="submit">S U B M I T</string>
 
 </resources>

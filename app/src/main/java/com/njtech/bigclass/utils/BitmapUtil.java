@@ -3,6 +3,8 @@ package com.njtech.bigclass.utils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -108,6 +110,23 @@ public class BitmapUtil {
 		matrix.postScale(scaleWidth, scaleHeight);
 		Bitmap newBmp = Bitmap.createBitmap(bitmap, 0, 0, width, height,matrix, false);
 		return newBmp;
+	}
+
+	public static Bitmap getBitmapFromUri(Uri uri)
+	{
+		try
+		{
+			// 读取uri所在的图片
+			Bitmap bitmap = MediaStore.Images.Media.getBitmap(MyApplication.getGlobalContext().getContentResolver(), uri);
+			return bitmap;
+		}
+		catch (Exception e)
+		{
+			Log.e("[Android]", e.getMessage());
+			Log.e("[Android]", "目录为：" + uri);
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public static String compressImage(Bitmap bitmap, String outPath,int quality) throws FileNotFoundException {
