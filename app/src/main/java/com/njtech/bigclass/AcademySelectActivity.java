@@ -6,13 +6,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.njtech.bigclass.adapter.ListAcademyGroupItemAdapter;
 import com.njtech.bigclass.entity.AcademysEntity;
 import com.njtech.bigclass.utils.API;
 import com.njtech.bigclass.utils.AppManager;
@@ -23,7 +23,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import retrofit2.Retrofit;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -43,7 +42,7 @@ public class AcademySelectActivity extends AppCompatActivity {
     ListView academyGroupList;
     private AppCompatActivity context;
     private List<AcademysEntity.DataBean> dataList;
-//    private ListSchoolGroupItemAdapter adapter;
+    private ListAcademyGroupItemAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +67,6 @@ public class AcademySelectActivity extends AppCompatActivity {
     }
 
 
-
     public void getSchoolList() {
         Retrofit retrofit = HttpControl.getInstance().getRetrofit();
         API api = retrofit.create(API.class);
@@ -88,17 +86,15 @@ public class AcademySelectActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(AcademysEntity academyListModel) {
-                       if (!academyListModel.isError()){
-                           dataList = academyListModel.getData();
-                           for (AcademysEntity.DataBean dataBean : dataList)
-                               Log.d("AcademySelectActivity", dataBean.getInfo().get(0).getName());
-                       }
+                        if (!academyListModel.isError()) {
+                            initSchoolList(academyListModel.getData());
+                        }
                     }
                 });
     }
 
-//    public void initSchoolList(List<InfoBean> data) {
-//        adapter = new ListSchoolGroupItemAdapter(context, data);
-//        schoolGroupList.setAdapter(adapter);
-//    }
+    public void initSchoolList(List<AcademysEntity.DataBean> data) {
+        adapter = new ListAcademyGroupItemAdapter(this, data);
+        academyGroupList.setAdapter(adapter);
+    }
 }

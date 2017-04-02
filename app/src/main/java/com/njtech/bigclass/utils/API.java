@@ -29,7 +29,7 @@ public interface API {
     @POST("token/getToken.php")
     Call<String> getToken(@Field("token") String token);
 
-    @GET("public/academys.php")
+    @POST("public/academys.php")
     Observable<AcademysEntity> getAcademys();
 
 
