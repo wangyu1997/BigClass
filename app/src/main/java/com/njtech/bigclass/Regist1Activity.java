@@ -85,8 +85,6 @@ public class Regist1Activity extends AppCompatActivity {
                 sex_popUp = new Sex_PopUp(this, new PopClick());
                 sex_popUp.showAtLocation(findViewById(R.id.regist1), Gravity.BOTTOM, 0, 0);
                 break;
-            case R.id.edit_major:
-                break;
             case R.id.edit_class:
                 class_popUp = new Class_PopUp(this, new PopClick(), new valueChangeListener());
                 classinfo = Class_PopUp.data[Class_PopUp.DEFAULT_VALUE];

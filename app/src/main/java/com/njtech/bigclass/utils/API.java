@@ -1,6 +1,8 @@
 package com.njtech.bigclass.utils;
 
 
+import com.njtech.bigclass.entity.AcademysEntity;
+
 import java.util.Map;
 
 import retrofit2.Call;
@@ -13,6 +15,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import rx.Observable;
+import rx.Subscriber;
 
 /**
  * Created by FJS0420 on 2016/8/31.
@@ -25,6 +28,11 @@ public interface API {
     @FormUrlEncoded
     @POST("token/getToken.php")
     Call<String> getToken(@Field("token") String token);
+
+    @GET("public/academys.php")
+    Observable<AcademysEntity> getAcademys();
+
+
 
 
 }

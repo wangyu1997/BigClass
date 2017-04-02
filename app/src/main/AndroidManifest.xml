@@ -16,16 +16,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".LogActivity">
-            <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".clip.ClipHeaderActivity"></activity>
         <activity android:name=".MakeupinfoActivity"></activity>
         <activity android:name=".upHeaderActivity"></activity>
         <activity android:name=".Regist1Activity"></activity>
         <activity android:name=".Regist2Activity"></activity>
+        <activity android:name=".AcademySelectActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
     </application>
 </manifest>
