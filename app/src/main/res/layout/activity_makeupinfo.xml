@@ -3,14 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/makeupinfo"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:fitsSystemWindows="true">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentTop="true"
-        android:background="?attr/colorPrimary"
+        android:background="@color/transprant"
         android:navigationIcon="@mipmap/nva_con"
         app:layout_scrollFlags="scroll|enterAlways"
         app:navigationIcon="@mipmap/nva_con"
@@ -31,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
-        android:background="@color/background"
+        android:background="@color/transprant"
         android:orientation="vertical"
         android:weightSum="1">
 
