@@ -30,6 +30,12 @@ public interface API {
     @POST("public/sendMail.php")
     Observable<StringEntity> getcode(@Field("action") String acton, @Field("email") String email);
 
+    //注册 请求验证码接口
+    @FormUrlEncoded
+    @POST("public/sendMail.php")
+    Observable<StringEntity> resetPass(@Field("action") String acton, @Field("email") String email, @Field("flag") String flag);
+
+
     //注册
     @FormUrlEncoded
     @POST("teacher/regist.php")
@@ -45,5 +51,9 @@ public interface API {
     @POST("teacher/upHeader.php")
     Observable<ArrayEntity> upHeader(@Field("head") String headUrl);
 
+    //上传头像
+    @FormUrlEncoded
+    @POST("teacher/forgetPass.php")
+    Observable<ArrayEntity> forgetPass(@Field("email") String email,@Field("password") String password);
 
 }

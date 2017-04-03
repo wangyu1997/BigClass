@@ -379,7 +379,7 @@ public class upHeaderActivity extends AppCompatActivity {
                     public void onCompleted() {
                         updateBaseInfoProgress.setVisibility(View.GONE);
                         Toast.makeText(upHeaderActivity.this, "上传头像成功，正在跳转至首页...", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(upHeaderActivity.this, MainActivity.class));
+                        MyApplication.restartApp();
                     }
 
                     @Override
