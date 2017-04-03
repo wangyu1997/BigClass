@@ -21,6 +21,11 @@
     <string name="sendverifycode">邮箱/用户名</string>
     <string name="forget_tool">找回密码</string>
     <string name="send">发送验证码</string>
+    <string name="completepersonalinfo">完善个人信息</string>
+    <string name="place">地点:</string>
+    <string name="time">时间:</string>
+    <string name="grade">绩点</string>
+    <string name="studentnumber">参加人数</string>
     <string-array name="sex">
         <item>♂ 男生</item>
         <item>♀ 女生</item>

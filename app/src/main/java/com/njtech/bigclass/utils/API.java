@@ -6,6 +6,7 @@ import com.njtech.bigclass.entity.ArrayEntity;
 import com.njtech.bigclass.entity.StringEntity;
 import com.njtech.bigclass.entity.LoginEntity;
 import com.njtech.bigclass.entity.RegistEntity;
+import com.njtech.bigclass.entity.courseShowEntity;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -51,9 +52,14 @@ public interface API {
     @POST("teacher/upHeader.php")
     Observable<ArrayEntity> upHeader(@Field("head") String headUrl);
 
-    //上传头像
+    //忘记密码
     @FormUrlEncoded
     @POST("teacher/forgetPass.php")
     Observable<ArrayEntity> forgetPass(@Field("email") String email,@Field("password") String password);
+
+    //首页课程
+    @FormUrlEncoded
+    @POST("public/allcourses.php")
+    Observable<courseShowEntity> getCourses(@Field("aid") int aid);
 
 }

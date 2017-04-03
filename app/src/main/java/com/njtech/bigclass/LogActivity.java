@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.njtech.bigclass.entity.DataBean;
 import com.njtech.bigclass.entity.LoginEntity;
 import com.njtech.bigclass.utils.API;
 import com.njtech.bigclass.utils.AppManager;
@@ -69,7 +70,11 @@ public class LogActivity extends AppCompatActivity {
 
     public void init() {
         if (UserInsertHelper.getUserInfo(LogActivity.this) != null) {
-            startActivity(new Intent(this, MainActivity.class));
+            DataBean loginEntity = UserInsertHelper.getUserInfo(this);
+            Intent intent = new Intent(LogActivity.this, HomePageActivity.class);
+            intent.putExtra("aid",loginEntity.getAid());
+            intent.putExtra("aname",loginEntity.getA_name());
+            startActivity(intent);
             finish();
         }
     }
@@ -128,7 +133,10 @@ public class LogActivity extends AppCompatActivity {
                             Toast.makeText(LogActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                             UserInsertHelper.removeUser(LogActivity.this);
                             UserInsertHelper.insertUser(LogActivity.this, loginEntity.getData());
-                            startActivity(new Intent(LogActivity.this, MainActivity.class));
+                            Intent intent = new Intent(LogActivity.this, HomePageActivity.class);
+                            intent.putExtra("aid",loginEntity.getData().getAid());
+                            intent.putExtra("aname",loginEntity.getData().getA_name());
+                            startActivity(intent);
                             finish();
                         }
                     }

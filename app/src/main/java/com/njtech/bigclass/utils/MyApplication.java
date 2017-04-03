@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.njtech.bigclass.utils.cache.SetCookieCache;
 import com.njtech.bigclass.utils.persistence.SharedPrefsCookiePersistor;
 import com.qiniu.android.common.Zone;
@@ -19,12 +20,12 @@ public class MyApplication extends Application {
     static ClearableCookieJar cookieJar;
 
 
-
     @Override
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
 
+        Fresco.initialize(context);
         Configuration config = new Configuration.Builder()
                 .chunkSize(256 * 1024)  //分片上传时，每片的大小。 默认256K
                 .putThreshhold(512 * 1024)  // 启用分片上传阀值。默认512K

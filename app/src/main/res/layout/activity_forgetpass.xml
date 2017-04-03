@@ -6,6 +6,7 @@
     android:background="@drawable/bg"
     android:gravity="center_horizontal"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="25dp">
 
@@ -52,7 +53,6 @@
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="18dp"
         android:background="@color/transprant"
         android:navigationIcon="@mipmap/nva_con"
         app:layout_constraintLeft_toLeftOf="parent"
