@@ -2,7 +2,8 @@ package com.njtech.bigclass.utils;
 
 
 import com.njtech.bigclass.entity.AcademysEntity;
-import com.njtech.bigclass.entity.GeneralEntity;
+import com.njtech.bigclass.entity.ArrayEntity;
+import com.njtech.bigclass.entity.StringEntity;
 import com.njtech.bigclass.entity.LoginEntity;
 import com.njtech.bigclass.entity.RegistEntity;
 
@@ -27,7 +28,7 @@ public interface API {
     //注册 请求验证码接口
     @FormUrlEncoded
     @POST("public/sendMail.php")
-    Observable<GeneralEntity> getcode(@Field("action") String acton, @Field("email") String email);
+    Observable<StringEntity> getcode(@Field("action") String acton, @Field("email") String email);
 
     //注册
     @FormUrlEncoded
@@ -38,6 +39,11 @@ public interface API {
     @FormUrlEncoded
     @POST("teacher/login.php")
     Observable<LoginEntity> login(@Field("username") String username, @Field("password") String password);
+
+    //上传头像
+    @FormUrlEncoded
+    @POST("teacher/upHeader.php")
+    Observable<ArrayEntity> upHeader(@Field("head") String headUrl);
 
 
 }

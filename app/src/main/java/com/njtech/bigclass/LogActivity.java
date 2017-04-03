@@ -3,7 +3,6 @@ package com.njtech.bigclass;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,13 +11,24 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.njtech.bigclass.entity.LoginEntity;
+import com.njtech.bigclass.utils.API;
 import com.njtech.bigclass.utils.AppManager;
+import com.njtech.bigclass.utils.HttpControl;
+import com.njtech.bigclass.utils.UserInsertHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Retrofit;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+
+import static rx.schedulers.Schedulers.io;
 
 public class LogActivity extends AppCompatActivity {
 
@@ -33,6 +43,8 @@ public class LogActivity extends AppCompatActivity {
     Button btnRegist;
     @BindView(R.id.btn_login)
     Button btnLogin;
+    @BindView(R.id.progressBar2)
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +67,11 @@ public class LogActivity extends AppCompatActivity {
 
     }
 
-    public void init(){
-
+    public void init() {
+        if (UserInsertHelper.getUserInfo(LogActivity.this) != null) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
     }
 
 
@@ -66,10 +81,55 @@ public class LogActivity extends AppCompatActivity {
             case R.id.tv_forget:
                 break;
             case R.id.btn_regist:
-                startActivity(new Intent(this,Regist1Activity.class));
+                startActivity(new Intent(this, Regist1Activity.class));
                 break;
             case R.id.btn_login:
+                if (editUser.getText().toString().isEmpty()) {
+                    Toast.makeText(this, "请输入用户名", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (editPasswd.getText().toString().isEmpty()) {
+                    Toast.makeText(this, "请输入密码", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                login();
                 break;
         }
+    }
+
+
+    public void login() {
+        progressBar.setVisibility(View.VISIBLE);
+        Toast.makeText(this, "正在登录，请稍后", Toast.LENGTH_SHORT).show();
+        Retrofit retrofit = HttpControl.getInstance().getRetrofit();
+        API api = retrofit.create(API.class);
+        api.login(editUser.getText().toString(), editPasswd.getText().toString())
+                .subscribeOn(io())
+                .unsubscribeOn(io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<LoginEntity>() {
+                    @Override
+                    public void onCompleted() {
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(LogActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onNext(LoginEntity loginEntity) {
+                        if (loginEntity.isError()) {
+                            Toast.makeText(LogActivity.this, "登录失败:" + loginEntity.getMsg(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(LogActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                            UserInsertHelper.removeUser(LogActivity.this);
+                            UserInsertHelper.insertUser(LogActivity.this, loginEntity.getData());
+                            startActivity(new Intent(LogActivity.this, MainActivity.class));
+                        }
+                    }
+                });
     }
 }

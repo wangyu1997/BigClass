@@ -13,16 +13,15 @@ public class DataBean {
      * createTime : 2017-04-02 09:51:56
      */
 
-    private String uid;
-    private String username;
-    private String aid;
-    private String a_name;
-    private String name;
-    private String email;
-    private String header;
-    private String sex;
-    private String createTime;
-    private String academy_name;
+    private String uid = "";
+    private String username = "";
+    private String aid = "";
+    private String a_name = "";
+    private String name = "";
+    private String email = "";
+    private String header = "";
+    private String sex = "";
+    private String createTime = "";
 
 
     public DataBean(DataBean dataBean) {
@@ -36,19 +35,10 @@ public class DataBean {
             this.header = dataBean.getHeader();
         this.sex = dataBean.getSex();
         this.createTime = dataBean.getCreateTime();
-        this.academy_name = dataBean.getAcademy_name();
     }
 
 
     public DataBean() {
-    }
-
-    public void setAcademy_name(String academy_name) {
-        this.academy_name = academy_name;
-    }
-
-    public String getAcademy_name() {
-        return academy_name;
     }
 
     public String getUid() {

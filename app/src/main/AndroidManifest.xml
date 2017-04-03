@@ -27,6 +27,6 @@
         <activity android:name=".Regist1Activity"></activity>
         <activity android:name=".Regist2Activity"></activity>
         <activity android:name=".AcademySelectActivity"></activity>
-
+        <activity android:name=".MainActivity"></activity>
     </application>
 </manifest>

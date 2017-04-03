@@ -17,7 +17,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.njtech.bigclass.entity.GeneralEntity;
+import com.njtech.bigclass.entity.StringEntity;
 import com.njtech.bigclass.entity.LoginEntity;
 import com.njtech.bigclass.entity.RegistEntity;
 import com.njtech.bigclass.entity.RegistVerEntity;
@@ -89,6 +89,12 @@ public class Regist2Activity extends AppCompatActivity {
 
     public void init() {
         data = getIntent();
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         academy_name = data.getStringExtra("academy_name");
         registVerEntity = (RegistVerEntity) data.getBundleExtra("bundle").getSerializable("regist");
     }
@@ -147,7 +153,7 @@ public class Regist2Activity extends AppCompatActivity {
                 .subscribeOn(io())
                 .unsubscribeOn(io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<GeneralEntity>() {
+                .subscribe(new Subscriber<StringEntity>() {
                     @Override
                     public void onCompleted() {
                         progressBar.setVisibility(View.GONE);
@@ -180,11 +186,11 @@ public class Regist2Activity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(GeneralEntity generalEntity) {
-                        if (generalEntity.isError()) {
+                    public void onNext(StringEntity stringEntity) {
+                        if (stringEntity.isError()) {
                             Toast.makeText(Regist2Activity.this, "发送验证码失败", Toast.LENGTH_SHORT).show();
                         } else {
-                            rawcode = generalEntity.getData();
+                            rawcode = stringEntity.getData();
                             Toast.makeText(Regist2Activity.this, "验证码发送成功，请回邮箱查看", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -195,7 +201,6 @@ public class Regist2Activity extends AppCompatActivity {
     public void login() {
         Retrofit retrofit = HttpControl.getInstance().getRetrofit();
         API api = retrofit.create(API.class);
-        Toast.makeText(this, registVerEntity.getUsername() + "  " + registVerEntity.getPassword(), Toast.LENGTH_SHORT).show();
         api.login(registVerEntity.getUsername(), registVerEntity.getPassword())
                 .subscribeOn(io())
                 .unsubscribeOn(io())
@@ -219,7 +224,6 @@ public class Regist2Activity extends AppCompatActivity {
                         } else {
                             Toast.makeText(Regist2Activity.this, "登录成功", Toast.LENGTH_SHORT).show();
                             UserInsertHelper.insertUser(Regist2Activity.this, loginEntity.getData());
-                            UserInsertHelper.insertAcademyName(Regist2Activity.this, academy_name);
                             startActivity(new Intent(Regist2Activity.this, upHeaderActivity.class));
                         }
                     }

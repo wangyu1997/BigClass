@@ -4,17 +4,16 @@ package com.njtech.bigclass.entity;
  * Created by wangyu on 03/04/2017.
  */
 
-public class GeneralEntity {
-
+public class ObjEntity {
     /**
      * error : false
      * msg : ok
-     * data : Wd#jgFXO@)
+     * data : {}
      */
 
     private boolean error;
     private String msg;
-    private String data;
+    private DataBean data;
 
     public boolean isError() {
         return error;
@@ -32,11 +31,14 @@ public class GeneralEntity {
         this.msg = msg;
     }
 
-    public String getData() {
+    public DataBean getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(DataBean data) {
         this.data = data;
+    }
+
+    public static class DataBean {
     }
 }

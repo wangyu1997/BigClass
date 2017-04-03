@@ -2,6 +2,7 @@ package com.njtech.bigclass.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import com.njtech.bigclass.entity.DataBean;
 import com.njtech.bigclass.entity.LoginEntity;
@@ -45,12 +46,6 @@ public class UserInsertHelper {
         editor.commit();
     }
 
-    public static void insertAcademyName(Context context, String Academy_name) {
-        SharedPreferences.Editor editor = MyApplication.getEditor(context);
-        editor.putString(ACADEMY_NAME, Academy_name);
-        editor.commit();
-    }
-
     public static void updateUser(Context context, DataBean infoBean) {
         SharedPreferences.Editor editor = MyApplication.getEditor(context);
         editor.putString(USERNAME, infoBean.getUsername());
@@ -58,7 +53,6 @@ public class UserInsertHelper {
         editor.putString(ANAME, infoBean.getA_name());
         editor.putString(EMAIL, infoBean.getEmail());
         editor.putString(SEX, infoBean.getSex());
-        editor.putString(ACADEMY_NAME, infoBean.getAcademy_name());
         if (infoBean.getHeader() != null)
             editor.putString(HEADER, infoBean.getHeader());
         editor.commit();
@@ -77,7 +71,6 @@ public class UserInsertHelper {
             userInfoBean.setName(sharedPreferences.getString(NAME, ""));
             userInfoBean.setEmail(sharedPreferences.getString(EMAIL, ""));
             userInfoBean.setCreateTime(sharedPreferences.getString(CREATETIME, ""));
-            userInfoBean.setAcademy_name(sharedPreferences.getString(ACADEMY_NAME, ""));
             return userInfoBean;
         }
 

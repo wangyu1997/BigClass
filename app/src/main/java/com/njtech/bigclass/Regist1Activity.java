@@ -69,6 +69,12 @@ public class Regist1Activity extends AppCompatActivity {
 
     public void init() {
         registVerEntity = new RegistVerEntity();
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         selectSex(1);
         editAcademy.setKeyListener(null);
     }
