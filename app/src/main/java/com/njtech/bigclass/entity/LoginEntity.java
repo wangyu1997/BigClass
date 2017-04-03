@@ -4,11 +4,11 @@ package com.njtech.bigclass.entity;
  * Created by wangyu on 03/04/2017.
  */
 
-public class RegistEntity {
+public class LoginEntity {
     /**
      * error : false
      * msg : ok
-     * data : {"uid":"58e1d8206553b","username":"wyy","aid":"1","a_name":"计算机科学与技术学院","name":"人不如故","email":"wangyu19970819@gmail.com","sex":"1","createTime":"2017-04-03 05:05:36"}
+     * data : {"uid":"58e0c9bc135d2","username":"wyyy","aid":"1","a_name":"计算机科学与技术学院","name":"人不如故","email":"wangyu19970819@qq.com","header":"http:dsads","sex":"1","createTime":"2017-04-02 09:51:56"}
      */
 
     private boolean error;
@@ -41,14 +41,15 @@ public class RegistEntity {
 
     public static class DataBean {
         /**
-         * uid : 58e1d8206553b
-         * username : wyy
+         * uid : 58e0c9bc135d2
+         * username : wyyy
          * aid : 1
          * a_name : 计算机科学与技术学院
          * name : 人不如故
-         * email : wangyu19970819@gmail.com
+         * email : wangyu19970819@qq.com
+         * header : http:dsads
          * sex : 1
-         * createTime : 2017-04-03 05:05:36
+         * createTime : 2017-04-02 09:51:56
          */
 
         private String uid;
@@ -57,6 +58,7 @@ public class RegistEntity {
         private String a_name;
         private String name;
         private String email;
+        private String header;
         private String sex;
         private String createTime;
 
@@ -106,6 +108,14 @@ public class RegistEntity {
 
         public void setEmail(String email) {
             this.email = email;
+        }
+
+        public String getHeader() {
+            return header;
+        }
+
+        public void setHeader(String header) {
+            this.header = header;
         }
 
         public String getSex() {

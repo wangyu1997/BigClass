@@ -14,10 +14,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.ListView;
 
-import com.njtech.bigclass.MakeupinfoActivity;
 import com.njtech.bigclass.R;
 import com.njtech.bigclass.Regist1Activity;
-import com.njtech.bigclass.entity.AcademysEntity;
 import com.njtech.bigclass.entity.AcademysEntity.DataBean;
 import com.njtech.bigclass.utils.ListViewUtil;
 

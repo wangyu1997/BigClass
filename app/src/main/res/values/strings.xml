@@ -19,8 +19,8 @@
     <string name="regist_tool">用户注册</string>
     <string name="next">下一步</string>
     <string name="sendverifycode">邮箱/用户名</string>
-    <string name="send">发送</string>
     <string name="forget_tool">找回密码</string>
+    <string name="send">发送验证码</string>
     <string-array name="sex">
         <item>♂ 男生</item>
         <item>♀ 女生</item>

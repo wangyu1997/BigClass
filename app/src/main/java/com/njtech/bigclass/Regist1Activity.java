@@ -13,10 +13,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
-import com.njtech.bigclass.entity.AcademysEntity;
-import com.njtech.bigclass.entity.RegistEntity;
+import com.njtech.bigclass.entity.RegistVerEntity;
 import com.njtech.bigclass.utils.AppManager;
 
 import butterknife.BindView;
@@ -38,17 +36,16 @@ public class Regist1Activity extends AppCompatActivity {
     Button btnNext;
     @BindView(R.id.edit_academy)
     EditText editAcademy;
-    private static final int academy_req = 581;
-    public static final int academy_res = 100;
-    public String classinfo;
-    public String sexStr;
-    public int sex;//男1 女2
     @BindView(R.id.im_male)
     ImageButton imMale;
     @BindView(R.id.im_female)
     ImageButton imFemale;
-    private RegistEntity registEntity;
-
+    private RegistVerEntity registVerEntity;
+    private static final int academy_req = 581;
+    public static final int academy_res = 100;
+    public String academy_name;
+    public String sexStr;
+    public int sex;//男1 女2
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +68,7 @@ public class Regist1Activity extends AppCompatActivity {
     }
 
     public void init() {
-        registEntity = new RegistEntity();
+        registVerEntity = new RegistVerEntity();
         selectSex(1);
         editAcademy.setKeyListener(null);
     }
@@ -80,13 +77,14 @@ public class Regist1Activity extends AppCompatActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_next:
-                registEntity.setUsername(editUser.getText().toString());
-                registEntity.setName(editName.getText().toString());
-                if (registEntity.isLeagel1()) {
+                registVerEntity.setUsername(editUser.getText().toString());
+                registVerEntity.setName(editName.getText().toString());
+                if (registVerEntity.isLeagel1()) {
                     Intent intent = new Intent(Regist1Activity.this, Regist2Activity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("regist", registEntity);
+                    bundle.putSerializable("regist", registVerEntity);
                     intent.putExtra("bundle", bundle);
+                    intent.putExtra("academy_name", academy_name);
                     startActivity(intent);
                 }
                 break;
@@ -116,11 +114,11 @@ public class Regist1Activity extends AppCompatActivity {
         imFemale.setImageDrawable(getResources().getDrawable(R.mipmap.femalehide));
         imMale.setImageDrawable(getResources().getDrawable(R.mipmap.malehide));
         if (flag == 1) {
-            registEntity.setSex(1);
+            registVerEntity.setSex(1);
             imMale.setImageDrawable(getResources().getDrawable(R.mipmap.maleshow));
         }
         if (flag == 2) {
-            registEntity.setSex(2);
+            registVerEntity.setSex(2);
             imFemale.setImageDrawable(getResources().getDrawable(R.mipmap.femaleshow));
         }
     }
@@ -129,10 +127,10 @@ public class Regist1Activity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if ((requestCode == academy_req) && (resultCode == academy_res)) {
-            String academy_name = data.getStringExtra("academy_name");
+            academy_name = data.getStringExtra("academy_name");
             int academy_id = data.getIntExtra("academy_id", -1);
             editAcademy.setText(academy_name);
-            registEntity.setAid(academy_id);
+            registVerEntity.setAid(academy_id);
         }
     }
 }

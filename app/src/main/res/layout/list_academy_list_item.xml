@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:paddingLeft="15dp"
-        android:background="@color/white">
+        >
 
         <TextView
             android:layout_width="wrap_content"
@@ -16,7 +16,7 @@
             android:layout_gravity="center_vertical"
             android:text="安全环境学院"
             android:textSize="14sp"
-            android:textColor="@color/textcolor2"
+            android:textColor="@color/textcolor1"
             android:id="@+id/tv_academy_group_item" />
     </LinearLayout>
 </LinearLayout>
