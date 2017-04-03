@@ -17,6 +17,7 @@ import android.widget.ListView;
 import com.njtech.bigclass.MakeupinfoActivity;
 import com.njtech.bigclass.R;
 import com.njtech.bigclass.Regist1Activity;
+import com.njtech.bigclass.entity.AcademysEntity;
 import com.njtech.bigclass.entity.AcademysEntity.DataBean;
 import com.njtech.bigclass.utils.ListViewUtil;
 
@@ -29,7 +30,7 @@ public class ListAcademyGroupItemAdapter extends BaseAdapter {
     private ListAcademyListItemAdapter adapter;
 
 
-    public ListAcademyGroupItemAdapter(Context context,List<DataBean> objects ) {
+    public ListAcademyGroupItemAdapter(Context context, List<DataBean> objects) {
         this.context = (AppCompatActivity) context;
         this.layoutInflater = LayoutInflater.from(context);
         this.objects = objects;
@@ -69,15 +70,13 @@ public class ListAcademyGroupItemAdapter extends BaseAdapter {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DataBean.InfoBean bean = objects.get(position);
-                String academy_id = bean.getId();
+                int academy_id = Integer.parseInt(bean.getId());
                 String academy_name = bean.getName();
                 Intent intent = new Intent(context, Regist1Activity.class);
                 intent.putExtra("academy_id", academy_id);
-                intent.putExtra("school_name", academy_name);
-                if (context instanceof AppCompatActivity) {
-                    context.setResult(MakeupinfoActivity.SCHOOL_RES, intent);
-                    context.finish();
-                }
+                intent.putExtra("academy_name", academy_name);
+                context.setResult(Regist1Activity.academy_res, intent);
+                context.finish();
             }
         });
         holder.academyList.setAdapter(adapter);
@@ -101,7 +100,7 @@ public class ListAcademyGroupItemAdapter extends BaseAdapter {
         private Context context;
         private LayoutInflater layoutInflater;
 
-        public ListAcademyListItemAdapter(Context context,List<DataBean.InfoBean> objects) {
+        public ListAcademyListItemAdapter(Context context, List<DataBean.InfoBean> objects) {
             this.context = context;
             this.layoutInflater = LayoutInflater.from(context);
             this.objects = objects;

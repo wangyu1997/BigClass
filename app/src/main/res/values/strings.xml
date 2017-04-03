@@ -15,6 +15,7 @@
     <string name="name">姓名</string>
     <string name="major">专业</string>
     <string name="classX">班级</string>
+    <string name="email">邮箱</string>
     <string name="regist_tool">用户注册</string>
     <string name="next">下一步</string>
     <string name="sendverifycode">邮箱/用户名</string>

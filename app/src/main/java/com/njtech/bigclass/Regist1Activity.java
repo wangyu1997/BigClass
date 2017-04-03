@@ -1,24 +1,22 @@
 package com.njtech.bigclass;
 
 import android.Manifest;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.Guideline;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.NumberPicker;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
-import com.njtech.bigclass.PopUpWindow.Class_PopUp;
-import com.njtech.bigclass.PopUpWindow.Sex_PopUp;
+import com.njtech.bigclass.entity.AcademysEntity;
+import com.njtech.bigclass.entity.RegistEntity;
 import com.njtech.bigclass.utils.AppManager;
 
 import butterknife.BindView;
@@ -34,23 +32,22 @@ public class Regist1Activity extends AppCompatActivity {
     Toolbar toolbar;
     @BindView(R.id.edit_user)
     EditText editUser;
-    @BindView(R.id.edit_passwd)
-    EditText editPasswd;
     @BindView(R.id.edit_name)
     EditText editName;
-    @BindView(R.id.edit_sex)
-    EditText editSex;
-    @BindView(R.id.edit_class)
-    EditText editClass;
     @BindView(R.id.btn_next)
     Button btnNext;
     @BindView(R.id.edit_academy)
     EditText editAcademy;
-    private Class_PopUp class_popUp;
-    private Sex_PopUp sex_popUp;
+    private static final int academy_req = 581;
+    public static final int academy_res = 100;
     public String classinfo;
     public String sexStr;
     public int sex;//男1 女2
+    @BindView(R.id.im_male)
+    ImageButton imMale;
+    @BindView(R.id.im_female)
+    ImageButton imFemale;
+    private RegistEntity registEntity;
 
 
     @Override
@@ -74,66 +71,68 @@ public class Regist1Activity extends AppCompatActivity {
     }
 
     public void init() {
-        editClass.setKeyListener(null);
-        editSex.setKeyListener(null);
+        registEntity = new RegistEntity();
+        selectSex(1);
+        editAcademy.setKeyListener(null);
     }
 
-    @OnClick({R.id.edit_sex, R.id.edit_class, R.id.btn_next})
+    @OnClick(R.id.btn_next)
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.edit_sex:
-                sex_popUp = new Sex_PopUp(this, new PopClick());
-                sex_popUp.showAtLocation(findViewById(R.id.regist1), Gravity.BOTTOM, 0, 0);
-                break;
-            case R.id.edit_class:
-                class_popUp = new Class_PopUp(this, new PopClick(), new valueChangeListener());
-                classinfo = Class_PopUp.data[Class_PopUp.DEFAULT_VALUE];
-                class_popUp.showAtLocation(this.findViewById(R.id.regist1), Gravity.BOTTOM, 0, 0);
-                break;
             case R.id.btn_next:
+                registEntity.setUsername(editUser.getText().toString());
+                registEntity.setName(editName.getText().toString());
+                if (registEntity.isLeagel1()) {
+                    Intent intent = new Intent(Regist1Activity.this, Regist2Activity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("regist", registEntity);
+                    intent.putExtra("bundle", bundle);
+                    startActivity(intent);
+                }
                 break;
         }
     }
 
     @OnClick(R.id.edit_academy)
     public void onClick() {
+        Intent intent = new Intent(this, AcademySelectActivity.class);
+        startActivityForResult(intent, academy_req);
     }
 
-    public class valueChangeListener implements NumberPicker.OnValueChangeListener {
-
-        @Override
-        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-            classinfo = Class_PopUp.data[picker.getValue()];
+    @OnClick({R.id.im_male, R.id.im_female})
+    public void selectSex(View view) {
+        switch (view.getId()) {
+            case R.id.im_male:
+                selectSex(1);
+                break;
+            case R.id.im_female:
+                selectSex(2);
+                break;
         }
     }
 
-    public class PopClick implements View.OnClickListener {
 
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.pop_cancel:
-                    class_popUp.dismiss();
-                    break;
-                case R.id.pop_confirm:
-                    if (classinfo != null) {
-                        class_popUp.dismiss();
-                        editClass.setText(classinfo);
-                    }
-                    break;
-                case R.id.man:
-                    sexStr = "男";
-                    sex = 1;
-                    editSex.setText(sexStr);
-                    sex_popUp.dismiss();
-                    break;
-                case R.id.woman:
-                    sexStr = "女";
-                    sex = 2;
-                    editSex.setText(sexStr);
-                    sex_popUp.dismiss();
-                    break;
-            }
+    public void selectSex(int flag) {
+        imFemale.setImageDrawable(getResources().getDrawable(R.mipmap.femalehide));
+        imMale.setImageDrawable(getResources().getDrawable(R.mipmap.malehide));
+        if (flag == 1) {
+            registEntity.setSex(1);
+            imMale.setImageDrawable(getResources().getDrawable(R.mipmap.maleshow));
+        }
+        if (flag == 2) {
+            registEntity.setSex(2);
+            imFemale.setImageDrawable(getResources().getDrawable(R.mipmap.femaleshow));
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if ((requestCode == academy_req) && (resultCode == academy_res)) {
+            String academy_name = data.getStringExtra("academy_name");
+            int academy_id = data.getIntExtra("academy_id", -1);
+            editAcademy.setText(academy_name);
+            registEntity.setAid(academy_id);
         }
     }
 }
