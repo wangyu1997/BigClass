@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,7 +14,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +26,7 @@ import com.njtech.bigclass.entity.courseShowEntity;
 import com.njtech.bigclass.utils.API;
 import com.njtech.bigclass.utils.AppManager;
 import com.njtech.bigclass.utils.HttpControl;
+import com.njtech.bigclass.utils.ScrollUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +42,8 @@ import static rx.schedulers.Schedulers.io;
 
 public class HomePageActivity extends AppCompatActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    //    @BindView(R.id.toolbar)
+//    Toolbar toolbar;
     @BindView(R.id.layout_first)
     LinearLayout layoutFirst;
     @BindView(R.id.layout_second)
@@ -50,8 +54,10 @@ public class HomePageActivity extends AppCompatActivity {
     RecyclerView courseList;
     @BindView(R.id.id_swipe_ly)
     SwipeRefreshLayout idSwipeLy;
-    @BindView(R.id.tv_title)
-    TextView tvTitle;
+    //    @BindView(R.id.tv_title)
+//    TextView tvTitle;
+    @BindView(R.id.tabview)
+    RelativeLayout tabview;
     private ListCourseItemAdapter adapter;
     private RecyclerView.LayoutManager manager;
     private int aid;
@@ -85,12 +91,11 @@ public class HomePageActivity extends AppCompatActivity {
         layoutFirst.setBackground(getResources().getDrawable(R.color.amber_50));
         manager = new LinearLayoutManager(this);
         courseList.setLayoutManager(manager);
-        adapter = new ListCourseItemAdapter(HomePageActivity.this, new ArrayList<courseShowEntity.DataBean>());
-        courseList.setAdapter(adapter);
         data = getIntent();
         aid = Integer.parseInt(data.getStringExtra("aid"));
         aname = data.getStringExtra("aname");
-        tvTitle.setText(aname);
+        adapter = new ListCourseItemAdapter(HomePageActivity.this, new ArrayList<courseShowEntity.DataBean>(), aid, aname);
+        courseList.setAdapter(adapter);
 
         idSwipeLy.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light, android.R.color.holo_orange_light, android.R.color.holo_green_light);
         idSwipeLy.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -99,6 +104,23 @@ public class HomePageActivity extends AppCompatActivity {
             public void onRefresh() {
                 // TODO Auto-generated method stub
                 getCourse(aid);
+            }
+        });
+        courseList.setOnScrollListener(new ScrollUtil.inVisibleScorllListener() {
+            @Override
+            public void onHide() {
+                ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) tabview.getLayoutParams();
+                int fabBottomMargin = lp.bottomMargin;
+                tabview.animate().translationY(tabview.getHeight() + fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
+//                ConstraintLayout.LayoutParams lp1 = (ConstraintLayout.LayoutParams) toolbar.getLayoutParams();
+//                int fabTopMargin = lp1.topMargin;
+//                toolbar.animate().translationY(fabTopMargin-toolbar.getHeight()).setInterpolator(new AccelerateInterpolator(2)).start();
+            }
+
+            @Override
+            public void onShow() {
+                tabview.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+//                toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
             }
         });
     }
@@ -158,9 +180,5 @@ public class HomePageActivity extends AppCompatActivity {
 
     @OnClick(R.id.id_swipe_ly)
     public void onClick() {
-    }
-
-    @OnClick(R.id.tv_title)
-    public void onViewClicked() {
     }
 }
