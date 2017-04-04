@@ -43,6 +43,7 @@ public class AcademySelectActivity extends AppCompatActivity {
     private AppCompatActivity context;
     private List<AcademysEntity.DataBean> dataList;
     private ListAcademyGroupItemAdapter adapter;
+    private boolean flag;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +65,8 @@ public class AcademySelectActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         dataList = new ArrayList<>();
         getSchoolList();
+        if (getIntent().getIntExtra("flag", -1) != -1)
+            flag = true;
     }
 
 
@@ -95,6 +98,8 @@ public class AcademySelectActivity extends AppCompatActivity {
 
     public void initSchoolList(List<AcademysEntity.DataBean> data) {
         adapter = new ListAcademyGroupItemAdapter(this, data);
+        if (flag)
+            adapter.setFlag(flag);
         academyGroupList.setAdapter(adapter);
     }
 }

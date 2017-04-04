@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -17,7 +19,11 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.njtech.bigclass.AcademySelectActivity;
+import com.njtech.bigclass.FootTextInterFace;
+import com.njtech.bigclass.HomePageActivity;
 import com.njtech.bigclass.R;
+import com.njtech.bigclass.entity.AcademysEntity;
 import com.njtech.bigclass.entity.courseShowEntity.DataBean;
 import com.njtech.bigclass.utils.MyApplication;
 
@@ -27,15 +33,17 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private List<DataBean> objects = new ArrayList<DataBean>();
 
-    private Context context;
+    private AppCompatActivity context;
     private LayoutInflater layoutInflater;
     private int aid;
     private String aname;
     private static final int dataType = 45;
     private static final int footType = 908;
     private static final int headType = 167;
+    public FootTextInterFace interFace;
 
-    public ListCourseItemAdapter(Context context, List<DataBean> objects, int aid, String aname) {
+
+    public ListCourseItemAdapter(AppCompatActivity context, List<DataBean> objects, int aid, String aname) {
         this.objects = objects;
         this.context = context;
         this.aid = aid;
@@ -51,6 +59,11 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void setAacademy(int aid, String aname) {
         this.aid = aid;
         this.aname = aname;
+        notifyDataSetChanged();
+    }
+
+    public void setInterFace(FootTextInterFace interFace){
+        this.interFace = interFace;
     }
 
     @Override
@@ -65,22 +78,37 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == headType) {
-            RecyclerView.ViewHolder holder;
-            holder = new ViewHolder(LayoutInflater.from(context).inflate(R.layout.headview, parent, false));
+            HeadHolder holder;
+            holder = new HeadHolder(LayoutInflater.from(context).inflate(R.layout.headview, parent, false));
             return holder;
         } else if (viewType == dataType) {
             RecyclerView.ViewHolder holder;
             holder = new ViewHolder(LayoutInflater.from(context).inflate(R.layout.list_course_item, parent, false));
             return holder;
         } else {
-            RecyclerView.ViewHolder holder;
-            holder = new ViewHolder(LayoutInflater.from(context).inflate(R.layout.footview, parent, false));
+            FootViewHolder holder;
+            holder = new FootViewHolder(LayoutInflater.from(context).inflate(R.layout.footview, parent, false));
             return holder;
         }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (position == 0) {
+            if (holder instanceof HeadHolder) {
+                ((HeadHolder) holder).tv_title.setText(aname);
+                ((HeadHolder) holder).tv_title.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (context instanceof HomePageActivity) {
+                            Intent intent = new Intent(context, AcademySelectActivity.class);
+                            intent.putExtra("flag", 2);
+                            context.startActivityForResult(intent, ((HomePageActivity) context).Academy_req);
+                        }
+                    }
+                });
+            }
+        }
         if ((position != objects.size() + 1) && (position != 0)) {
             DataBean object = objects.get(position - 1);
             String courseName = object.getC_name();
@@ -105,9 +133,9 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 ((ViewHolder) holder).tvStudentnumber.setText(number);
             }
         }
-        if (position == 0) {
-            if (holder instanceof HeadHolder) {
-                ((HeadHolder) holder).tv_title.setText(aname);
+        if (position == objects.size() + 1) {
+            if (holder instanceof FootViewHolder) {
+                interFace.setText(((FootViewHolder) holder).tv_foot);
             }
         }
     }
@@ -130,6 +158,15 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             super(view);
             toolbar = (Toolbar) view.findViewById(R.id.toolbar);
             tv_title = (TextView) view.findViewById(R.id.tv_title);
+        }
+    }
+
+    protected class FootViewHolder extends RecyclerView.ViewHolder {
+        private TextView tv_foot;
+
+        public FootViewHolder(View view) {
+            super(view);
+            tv_foot = (TextView) view.findViewById(R.id.text_foot);
         }
     }
 

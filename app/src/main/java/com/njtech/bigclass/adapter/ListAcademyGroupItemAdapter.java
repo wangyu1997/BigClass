@@ -14,6 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.ListView;
 
+import com.njtech.bigclass.HomePageActivity;
 import com.njtech.bigclass.R;
 import com.njtech.bigclass.Regist1Activity;
 import com.njtech.bigclass.entity.AcademysEntity.DataBean;
@@ -26,12 +27,17 @@ public class ListAcademyGroupItemAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private AppCompatActivity context;
     private ListAcademyListItemAdapter adapter;
+    private boolean flag = false;
 
 
     public ListAcademyGroupItemAdapter(Context context, List<DataBean> objects) {
         this.context = (AppCompatActivity) context;
         this.layoutInflater = LayoutInflater.from(context);
         this.objects = objects;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
     }
 
     @Override
@@ -70,10 +76,18 @@ public class ListAcademyGroupItemAdapter extends BaseAdapter {
                 DataBean.InfoBean bean = objects.get(position);
                 int academy_id = Integer.parseInt(bean.getId());
                 String academy_name = bean.getName();
-                Intent intent = new Intent(context, Regist1Activity.class);
-                intent.putExtra("academy_id", academy_id);
-                intent.putExtra("academy_name", academy_name);
-                context.setResult(Regist1Activity.academy_res, intent);
+                if (flag) {
+                    Intent intent = new Intent(context, HomePageActivity.class);
+                    intent.putExtra("academy_id", academy_id);
+                    intent.putExtra("academy_name", academy_name);
+                    context.setResult(HomePageActivity.Academy_res, intent);
+                } else {
+                    Intent intent = new Intent(context, Regist1Activity.class);
+                    intent.putExtra("academy_id", academy_id);
+                    intent.putExtra("academy_name", academy_name);
+                    context.setResult(Regist1Activity.academy_res, intent);
+                }
+
                 context.finish();
             }
         });

@@ -10,13 +10,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,8 +42,6 @@ import static rx.schedulers.Schedulers.io;
 
 public class HomePageActivity extends AppCompatActivity {
 
-    //    @BindView(R.id.toolbar)
-//    Toolbar toolbar;
     @BindView(R.id.layout_first)
     LinearLayout layoutFirst;
     @BindView(R.id.layout_second)
@@ -54,15 +52,19 @@ public class HomePageActivity extends AppCompatActivity {
     RecyclerView courseList;
     @BindView(R.id.id_swipe_ly)
     SwipeRefreshLayout idSwipeLy;
-    //    @BindView(R.id.tv_title)
-//    TextView tvTitle;
     @BindView(R.id.tabview)
     RelativeLayout tabview;
+    @BindView(R.id.progressBar4)
+    ProgressBar progressBar;
     private ListCourseItemAdapter adapter;
     private RecyclerView.LayoutManager manager;
     private int aid;
     private String aname;
     private Intent data;
+    public static final int Academy_res = 600;
+    public final int Academy_req = 613;
+    private FootTextInterFace interFace;
+    private List<com.njtech.bigclass.entity.courseShowEntity.DataBean> datas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,11 +94,11 @@ public class HomePageActivity extends AppCompatActivity {
         manager = new LinearLayoutManager(this);
         courseList.setLayoutManager(manager);
         data = getIntent();
+        datas = new ArrayList<>();
         aid = Integer.parseInt(data.getStringExtra("aid"));
         aname = data.getStringExtra("aname");
-        adapter = new ListCourseItemAdapter(HomePageActivity.this, new ArrayList<courseShowEntity.DataBean>(), aid, aname);
+        adapter = new ListCourseItemAdapter(HomePageActivity.this, datas, aid, aname);
         courseList.setAdapter(adapter);
-
         idSwipeLy.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light, android.R.color.holo_orange_light, android.R.color.holo_green_light);
         idSwipeLy.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 
@@ -106,21 +108,28 @@ public class HomePageActivity extends AppCompatActivity {
                 getCourse(aid);
             }
         });
+        interFace = new FootTextInterFace() {
+            @Override
+            public void setText(TextView tv) {
+                if (datas.size()==0){
+                    tv.setText("暂无数据");
+                }else {
+                    tv.setText("加载完了");
+                }
+            }
+        };
+        adapter.setInterFace(interFace);
         courseList.setOnScrollListener(new ScrollUtil.inVisibleScorllListener() {
             @Override
             public void onHide() {
                 ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) tabview.getLayoutParams();
                 int fabBottomMargin = lp.bottomMargin;
                 tabview.animate().translationY(tabview.getHeight() + fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
-//                ConstraintLayout.LayoutParams lp1 = (ConstraintLayout.LayoutParams) toolbar.getLayoutParams();
-//                int fabTopMargin = lp1.topMargin;
-//                toolbar.animate().translationY(fabTopMargin-toolbar.getHeight()).setInterpolator(new AccelerateInterpolator(2)).start();
             }
 
             @Override
             public void onShow() {
                 tabview.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
-//                toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
             }
         });
     }
@@ -130,6 +139,7 @@ public class HomePageActivity extends AppCompatActivity {
         super.onResume();
         idSwipeLy.setRefreshing(true);
         getCourse(aid);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @OnClick({R.id.layout_second, R.id.layout_third})
@@ -155,12 +165,14 @@ public class HomePageActivity extends AppCompatActivity {
                     @Override
                     public void onCompleted() {
                         idSwipeLy.setRefreshing(false);
+                        progressBar.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Toast.makeText(HomePageActivity.this, "获取课程信息失败，请稍后重试", Toast.LENGTH_SHORT).show();
                         idSwipeLy.setRefreshing(false);
+                        progressBar.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -168,7 +180,7 @@ public class HomePageActivity extends AppCompatActivity {
                         if (courseShowEntity.isError()) {
                             Toast.makeText(HomePageActivity.this, "获取课程信息失败，请稍后重试", Toast.LENGTH_SHORT).show();
                         } else {
-                            List<com.njtech.bigclass.entity.courseShowEntity.DataBean> datas = courseShowEntity.getData();
+                            datas = courseShowEntity.getData();
                             if (datas == null || datas.size() == 0)
                                 datas = new ArrayList<>();
                             adapter.setData(datas);
@@ -177,8 +189,15 @@ public class HomePageActivity extends AppCompatActivity {
                 });
     }
 
-
-    @OnClick(R.id.id_swipe_ly)
-    public void onClick() {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Academy_req && resultCode == Academy_res) {
+            this.aid = data.getIntExtra("academy_id", -1);
+            this.aname = data.getStringExtra("academy_name");
+            if (aid != -1 && !aname.isEmpty() && adapter != null) {
+                adapter.setAacademy(aid, aname);
+            }
+        }
     }
+
 }
