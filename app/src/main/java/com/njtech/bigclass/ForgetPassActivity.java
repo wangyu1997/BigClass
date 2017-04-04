@@ -128,6 +128,10 @@ public class ForgetPassActivity extends AppCompatActivity {
             Toast.makeText(MyApplication.getGlobalContext(), "两次输入密码不一致", Toast.LENGTH_SHORT).show();
             return;
         }
+        if (password.length()<8) {
+            Toast.makeText(MyApplication.getGlobalContext(), "密码必须超过8位", Toast.LENGTH_SHORT).show();
+            return;
+        }
         postChange(email, password);
     }
 

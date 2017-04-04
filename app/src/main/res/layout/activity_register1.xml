@@ -132,7 +132,7 @@
                 android:layout_height="50dp"
                 android:layout_marginBottom="5dp"
                 android:hint="@string/academy"
-                android:inputType="textPassword"
+                android:inputType="text"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:theme="@style/MyEditText" />

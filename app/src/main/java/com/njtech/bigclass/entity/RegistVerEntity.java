@@ -13,13 +13,13 @@ import java.util.regex.Pattern;
  */
 
 public class RegistVerEntity implements Serializable {
-    private String username ="";
-    private String email ="";
-    private String password ="";
-    private String passwordCom ="";
-    private String name ="";
+    private String username = "";
+    private String email = "";
+    private String password = "";
+    private String passwordCom = "";
+    private String name = "";
     private int sex = -1;
-    private String header ="";
+    private String header = "";
     private int aid = -1;
 
     public RegistVerEntity(String username, String email, String password, String passwordCom, String name, int sex, String header) {
@@ -138,6 +138,10 @@ public class RegistVerEntity implements Serializable {
         }
         if (!passwordCom.equals(password)) {
             Toast.makeText(MyApplication.getGlobalContext(), "两次输入密码不一致", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (password.length() < 8) {
+            Toast.makeText(MyApplication.getGlobalContext(), "密码必须超过8位", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
