@@ -78,6 +78,12 @@ public class ForgetPassActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_forgetpass);
         ButterKnife.bind(this);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @OnClick({R.id.button3, R.id.btn_login})

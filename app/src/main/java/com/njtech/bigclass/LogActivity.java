@@ -34,16 +34,16 @@ import static rx.schedulers.Schedulers.io;
 public class LogActivity extends AppCompatActivity {
 
 
-    @BindView(R.id.edit_passwd)
-    EditText editPasswd;
     @BindView(R.id.edit_user)
     EditText editUser;
+    @BindView(R.id.edit_passwd)
+    EditText editPasswd;
     @BindView(R.id.tv_forget)
     TextView tvForget;
-    @BindView(R.id.btn_regist)
-    Button btnRegist;
     @BindView(R.id.btn_login)
     Button btnLogin;
+    @BindView(R.id.btn_regist)
+    Button btnRegist;
     @BindView(R.id.progressBar2)
     ProgressBar progressBar;
 
@@ -72,37 +72,12 @@ public class LogActivity extends AppCompatActivity {
         if (UserInsertHelper.getUserInfo(LogActivity.this) != null) {
             DataBean loginEntity = UserInsertHelper.getUserInfo(this);
             Intent intent = new Intent(LogActivity.this, HomePageActivity.class);
-            intent.putExtra("aid",loginEntity.getAid());
-            intent.putExtra("aname",loginEntity.getA_name());
+            intent.putExtra("aid", loginEntity.getAid());
+            intent.putExtra("aname", loginEntity.getA_name());
             startActivity(intent);
             finish();
         }
     }
-
-
-    @OnClick({R.id.tv_forget, R.id.btn_regist, R.id.btn_login})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.tv_forget:
-                startActivity(new Intent(this, ForgetPassActivity.class));
-                break;
-            case R.id.btn_regist:
-                startActivity(new Intent(this, Regist1Activity.class));
-                break;
-            case R.id.btn_login:
-                if (editUser.getText().toString().isEmpty()) {
-                    Toast.makeText(this, "请输入用户名", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (editPasswd.getText().toString().isEmpty()) {
-                    Toast.makeText(this, "请输入密码", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                login();
-                break;
-        }
-    }
-
 
     public void login() {
         progressBar.setVisibility(View.VISIBLE);
@@ -134,12 +109,35 @@ public class LogActivity extends AppCompatActivity {
                             UserInsertHelper.removeUser(LogActivity.this);
                             UserInsertHelper.insertUser(LogActivity.this, loginEntity.getData());
                             Intent intent = new Intent(LogActivity.this, HomePageActivity.class);
-                            intent.putExtra("aid",loginEntity.getData().getAid());
-                            intent.putExtra("aname",loginEntity.getData().getA_name());
+                            intent.putExtra("aid", loginEntity.getData().getAid());
+                            intent.putExtra("aname", loginEntity.getData().getA_name());
                             startActivity(intent);
                             finish();
                         }
                     }
                 });
+    }
+
+    @OnClick({R.id.tv_forget, R.id.btn_login, R.id.btn_regist})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_forget:
+                startActivity(new Intent(this, ForgetPassActivity.class));
+                break;
+            case R.id.btn_regist:
+                startActivity(new Intent(this, Regist1Activity.class));
+                break;
+            case R.id.btn_login:
+                if (editUser.getText().toString().isEmpty()) {
+                    Toast.makeText(this, "请输入用户名", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (editPasswd.getText().toString().isEmpty()) {
+                    Toast.makeText(this, "请输入密码", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                login();
+                break;
+        }
     }
 }

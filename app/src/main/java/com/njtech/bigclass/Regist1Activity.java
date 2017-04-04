@@ -12,7 +12,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.njtech.bigclass.entity.RegistVerEntity;
 import com.njtech.bigclass.utils.AppManager;
@@ -32,14 +33,16 @@ public class Regist1Activity extends AppCompatActivity {
     EditText editUser;
     @BindView(R.id.edit_name)
     EditText editName;
-    @BindView(R.id.btn_next)
-    Button btnNext;
+    @BindView(R.id.tv_sex)
+    TextView tvSex;
+    @BindView(R.id.im_male)
+    ImageView imMale;
+    @BindView(R.id.im_female)
+    ImageView imFemale;
     @BindView(R.id.edit_academy)
     EditText editAcademy;
-    @BindView(R.id.im_male)
-    ImageButton imMale;
-    @BindView(R.id.im_female)
-    ImageButton imFemale;
+    @BindView(R.id.btn_next)
+    Button btnNext;
     private RegistVerEntity registVerEntity;
     private static final int academy_req = 581;
     public static final int academy_res = 100;
@@ -103,19 +106,6 @@ public class Regist1Activity extends AppCompatActivity {
         startActivityForResult(intent, academy_req);
     }
 
-    @OnClick({R.id.im_male, R.id.im_female})
-    public void selectSex(View view) {
-        switch (view.getId()) {
-            case R.id.im_male:
-                selectSex(1);
-                break;
-            case R.id.im_female:
-                selectSex(2);
-                break;
-        }
-    }
-
-
     public void selectSex(int flag) {
         imFemale.setImageDrawable(getResources().getDrawable(R.mipmap.femalehide));
         imMale.setImageDrawable(getResources().getDrawable(R.mipmap.malehide));
@@ -137,6 +127,18 @@ public class Regist1Activity extends AppCompatActivity {
             int academy_id = data.getIntExtra("academy_id", -1);
             editAcademy.setText(academy_name);
             registVerEntity.setAid(academy_id);
+        }
+    }
+
+    @OnClick({R.id.im_male, R.id.im_female, R.id.edit_academy})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.im_male:
+                selectSex(1);
+                break;
+            case R.id.im_female:
+                selectSex(2);
+                break;
         }
     }
 }

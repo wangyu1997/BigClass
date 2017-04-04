@@ -125,6 +125,10 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     Uri imgUri = Uri.parse(headUrl);
                     ((ViewHolder) holder).courseIcon.setImageURI(imgUri);
                 }
+                if (courseName.length()>8){
+                    courseName = courseName.substring(0,8);
+                    courseName+= "...";
+                }
                 ((ViewHolder) holder).tvCoursename.setText(courseName);
                 ((ViewHolder) holder).tvTeacher.setText(teacherName);
                 ((ViewHolder) holder).tvGrade.setText(grade);

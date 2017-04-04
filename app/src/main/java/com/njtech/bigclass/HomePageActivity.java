@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.melnykov.fab.FloatingActionButton;
 import com.njtech.bigclass.adapter.ListCourseItemAdapter;
 import com.njtech.bigclass.entity.courseShowEntity;
 import com.njtech.bigclass.utils.API;
@@ -56,6 +57,8 @@ public class HomePageActivity extends AppCompatActivity {
     RelativeLayout tabview;
     @BindView(R.id.progressBar4)
     ProgressBar progressBar;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
     private ListCourseItemAdapter adapter;
     private RecyclerView.LayoutManager manager;
     private int aid;
@@ -64,7 +67,7 @@ public class HomePageActivity extends AppCompatActivity {
     public static final int Academy_res = 600;
     public final int Academy_req = 613;
     private FootTextInterFace interFace;
-    private List<com.njtech.bigclass.entity.courseShowEntity.DataBean> datas;
+    private List<courseShowEntity.DataBean> datas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,25 +114,28 @@ public class HomePageActivity extends AppCompatActivity {
         interFace = new FootTextInterFace() {
             @Override
             public void setText(TextView tv) {
-                if (datas.size()==0){
+                if (datas.size() == 0) {
                     tv.setText("暂无数据");
-                }else {
+                } else {
                     tv.setText("加载完了");
                 }
             }
         };
+        progressBar.setVisibility(View.VISIBLE);
         adapter.setInterFace(interFace);
         courseList.setOnScrollListener(new ScrollUtil.inVisibleScorllListener() {
             @Override
             public void onHide() {
-                ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) tabview.getLayoutParams();
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) tabview.getLayoutParams();
                 int fabBottomMargin = lp.bottomMargin;
                 tabview.animate().translationY(tabview.getHeight() + fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
+                fab.hide();
             }
 
             @Override
             public void onShow() {
                 tabview.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+                fab.show();
             }
         });
     }
@@ -139,7 +145,6 @@ public class HomePageActivity extends AppCompatActivity {
         super.onResume();
         idSwipeLy.setRefreshing(true);
         getCourse(aid);
-        progressBar.setVisibility(View.VISIBLE);
     }
 
     @OnClick({R.id.layout_second, R.id.layout_third})
@@ -200,4 +205,8 @@ public class HomePageActivity extends AppCompatActivity {
         }
     }
 
+    @OnClick(R.id.fab)
+    public void onViewClicked() {
+        Toast.makeText(this, "添加课程", Toast.LENGTH_SHORT).show();
+    }
 }

@@ -17,10 +17,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.njtech.bigclass.entity.StringEntity;
 import com.njtech.bigclass.entity.LoginEntity;
 import com.njtech.bigclass.entity.RegistEntity;
 import com.njtech.bigclass.entity.RegistVerEntity;
+import com.njtech.bigclass.entity.StringEntity;
 import com.njtech.bigclass.utils.API;
 import com.njtech.bigclass.utils.AppManager;
 import com.njtech.bigclass.utils.HttpControl;
@@ -48,18 +48,18 @@ public class Regist2Activity extends AppCompatActivity {
     Toolbar toolbar;
     @BindView(R.id.edit_email)
     EditText editEmail;
-    @BindView(R.id.edit_passwdconfirm)
-    EditText editPasswdconfirm;
-    @BindView(R.id.edit_passwd)
-    EditText editPasswd;
     @BindView(R.id.edit_verifycode)
     EditText editVerifycode;
     @BindView(R.id.btn_resend)
     Button btnResend;
-    @BindView(R.id.progressBar)
-    ProgressBar progressBar;
+    @BindView(R.id.edit_passwd)
+    EditText editPasswd;
+    @BindView(R.id.edit_passwdconfirm)
+    EditText editPasswdconfirm;
     @BindView(R.id.btn_regist)
     Button btnRegist;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
     private RegistVerEntity registVerEntity;
     private Intent data;
     private String rawcode;
@@ -97,11 +97,6 @@ public class Regist2Activity extends AppCompatActivity {
         });
         academy_name = data.getStringExtra("academy_name");
         registVerEntity = (RegistVerEntity) data.getBundleExtra("bundle").getSerializable("regist");
-    }
-
-    @OnClick(R.id.btn_resend)
-    public void resend() {
-        send();
     }
 
     public void regist() {
@@ -263,18 +258,25 @@ public class Regist2Activity extends AppCompatActivity {
         return m.matches();
     }
 
-    @OnClick(R.id.btn_regist)
-    public void onClick() {
-        code = editVerifycode.getText().toString();
-        if (!code.equals(rawcode)) {
-            Toast.makeText(MyApplication.getGlobalContext(), "验证码不正确", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        registVerEntity.setEmail(editEmail.getText().toString());
-        registVerEntity.setPassword(editPasswd.getText().toString());
-        registVerEntity.setPasswordCom(editPasswdconfirm.getText().toString());
-        if (registVerEntity.isLeagel2()) {
-            regist();
+    @OnClick({R.id.btn_resend, R.id.btn_regist})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.btn_resend:
+                send();
+                break;
+            case R.id.btn_regist:
+                code = editVerifycode.getText().toString();
+                if (!code.equals(rawcode)) {
+                    Toast.makeText(MyApplication.getGlobalContext(), "验证码不正确", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                registVerEntity.setEmail(editEmail.getText().toString());
+                registVerEntity.setPassword(editPasswd.getText().toString());
+                registVerEntity.setPasswordCom(editPasswdconfirm.getText().toString());
+                if (registVerEntity.isLeagel2()) {
+                    regist();
+                }
+                break;
         }
     }
 }
