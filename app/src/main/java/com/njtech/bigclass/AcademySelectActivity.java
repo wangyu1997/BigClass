@@ -63,6 +63,12 @@ public class AcademySelectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_academy_select);
         AppManager.getAppManager().addActivity(this);
         ButterKnife.bind(this);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         dataList = new ArrayList<>();
         getSchoolList();
         if (getIntent().getIntExtra("flag", -1) != -1)

@@ -39,10 +39,10 @@ public class Regist1Activity extends AppCompatActivity {
     ImageView imMale;
     @BindView(R.id.im_female)
     ImageView imFemale;
-    @BindView(R.id.edit_academy)
-    EditText editAcademy;
     @BindView(R.id.btn_next)
     Button btnNext;
+    @BindView(R.id.text_academy)
+    TextView textAcademy;
     private RegistVerEntity registVerEntity;
     private static final int academy_req = 581;
     public static final int academy_res = 100;
@@ -79,7 +79,6 @@ public class Regist1Activity extends AppCompatActivity {
             }
         });
         selectSex(1);
-        editAcademy.setKeyListener(null);
     }
 
     @OnClick(R.id.btn_next)
@@ -98,12 +97,6 @@ public class Regist1Activity extends AppCompatActivity {
                 }
                 break;
         }
-    }
-
-    @OnClick(R.id.edit_academy)
-    public void onClick() {
-        Intent intent = new Intent(this, AcademySelectActivity.class);
-        startActivityForResult(intent, academy_req);
     }
 
     public void selectSex(int flag) {
@@ -125,12 +118,12 @@ public class Regist1Activity extends AppCompatActivity {
         if ((requestCode == academy_req) && (resultCode == academy_res)) {
             academy_name = data.getStringExtra("academy_name");
             int academy_id = data.getIntExtra("academy_id", -1);
-            editAcademy.setText(academy_name);
+            textAcademy.setText(academy_name);
             registVerEntity.setAid(academy_id);
         }
     }
 
-    @OnClick({R.id.im_male, R.id.im_female, R.id.edit_academy})
+    @OnClick({R.id.im_male, R.id.im_female})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.im_male:
@@ -140,6 +133,12 @@ public class Regist1Activity extends AppCompatActivity {
                 selectSex(2);
                 break;
         }
+    }
+
+    @OnClick(R.id.text_academy)
+    public void onViewClicked() {
+        Intent intent = new Intent(this, AcademySelectActivity.class);
+        startActivityForResult(intent, academy_req);
     }
 }
 

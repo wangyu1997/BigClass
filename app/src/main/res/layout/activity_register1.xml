@@ -126,16 +126,24 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/edit_academy"
+            <TextView
+                android:id="@+id/text_academy"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginBottom="5dp"
-                android:hint="@string/academy"
-                android:inputType="text"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/academy"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:theme="@style/MyEditText" />
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/app_primary"></View>
         </LinearLayout>
 
         <Button
