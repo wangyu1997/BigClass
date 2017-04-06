@@ -37,7 +37,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import static rx.schedulers.Schedulers.io;
 
 /**
- * Created by wangyu on 03/04/2017.
+ * Created by wangyu on bg3/04/2017.
  */
 
 public class ForgetPassActivity extends AppCompatActivity {

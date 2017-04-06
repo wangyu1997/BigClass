@@ -3,14 +3,14 @@ package com.njtech.bigclass.entity;
 import java.util.List;
 
 /**
- * Created by wangyu on 03/04/2017.
+ * Created by wangyu on bg3/04/2017.
  */
 
 public class courseShowEntity {
     /**
      * error : false
      * msg : ok
-     * data : [{"id":"3","c_name":"数据结构与算法","gpa":"3","tId":"58e21ecd3ed1d","teacher":"王宇","header":"http://onqif3xou.bkt.clouddn.com/Fr4l8AkpfB3B9weYeMrgJxm2SW6A","place":"厚学312","number":"0","time":"2017-04-01 12:00:00","state":"0"},{"id":"4","c_name":"数字逻辑设计","gpa":"3","tId":"58e21ecd3ed1d","teacher":"王宇","header":"http://onqif3xou.bkt.clouddn.com/Fr4l8AkpfB3B9weYeMrgJxm2SW6A","place":"厚学312","number":"0","time":"2017-04-01 12:00:00","state":"0"},{"id":"5","c_name":"汇编语言程序设计","gpa":"3","tId":"58e21ecd3ed1d","teacher":"王宇","header":"http://onqif3xou.bkt.clouddn.com/Fr4l8AkpfB3B9weYeMrgJxm2SW6A","place":"厚学312","number":"0","time":"2017-04-01 12:00:00","state":"0"},{"id":"6","c_name":"多媒体技术及应用","gpa":"3","tId":"58e21ecd3ed1d","teacher":"王宇","header":"http://onqif3xou.bkt.clouddn.com/Fr4l8AkpfB3B9weYeMrgJxm2SW6A","place":"厚学312","number":"0","time":"2017-04-01 12:00:00","state":"0"},{"id":"7","c_name":"马克思主义与中国特色社会主义概论","gpa":"3","tId":"58e21ecd3ed1d","teacher":"王宇","header":"http://onqif3xou.bkt.clouddn.com/Fr4l8AkpfB3B9weYeMrgJxm2SW6A","place":"厚学312","number":"0","time":"2017-04-01 12:00:00","state":"0"},{"id":"8","c_name":"大学体育","gpa":"1","tId":"58e21ecd3ed1d","teacher":"王宇","header":"http://onqif3xou.bkt.clouddn.com/Fr4l8AkpfB3B9weYeMrgJxm2SW6A","place":"厚学312","number":"0","time":"2017-04-01 12:00:00","state":"0"}]
+     * data : [{"id":"3","c_name":"数据结构与算法","gpa":"3","tId":"58e21ecd3ed1d","teacher":"王宇","header":"http://onqif3xou.bkt.clouddn.com/Fr4l8AkpfB3B9weYeMrgJxm2SW6A","place":"厚学312","number":"0","time":"2017-04-bg1 12:00:00","state":"0"},{"id":"4","c_name":"数字逻辑设计","gpa":"3","tId":"58e21ecd3ed1d","teacher":"王宇","header":"http://onqif3xou.bkt.clouddn.com/Fr4l8AkpfB3B9weYeMrgJxm2SW6A","place":"厚学312","number":"0","time":"2017-04-bg1 12:00:00","state":"0"},{"id":"5","c_name":"汇编语言程序设计","gpa":"3","tId":"58e21ecd3ed1d","teacher":"王宇","header":"http://onqif3xou.bkt.clouddn.com/Fr4l8AkpfB3B9weYeMrgJxm2SW6A","place":"厚学312","number":"0","time":"2017-04-bg1 12:00:00","state":"0"},{"id":"6","c_name":"多媒体技术及应用","gpa":"3","tId":"58e21ecd3ed1d","teacher":"王宇","header":"http://onqif3xou.bkt.clouddn.com/Fr4l8AkpfB3B9weYeMrgJxm2SW6A","place":"厚学312","number":"0","time":"2017-04-bg1 12:00:00","state":"0"},{"id":"7","c_name":"马克思主义与中国特色社会主义概论","gpa":"3","tId":"58e21ecd3ed1d","teacher":"王宇","header":"http://onqif3xou.bkt.clouddn.com/Fr4l8AkpfB3B9weYeMrgJxm2SW6A","place":"厚学312","number":"0","time":"2017-04-bg1 12:00:00","state":"0"},{"id":"8","c_name":"大学体育","gpa":"1","tId":"58e21ecd3ed1d","teacher":"王宇","header":"http://onqif3xou.bkt.clouddn.com/Fr4l8AkpfB3B9weYeMrgJxm2SW6A","place":"厚学312","number":"0","time":"2017-04-bg1 12:00:00","state":"0"}]
      */
 
     private boolean error;
@@ -51,7 +51,7 @@ public class courseShowEntity {
          * header : http://onqif3xou.bkt.clouddn.com/Fr4l8AkpfB3B9weYeMrgJxm2SW6A
          * place : 厚学312
          * number : 0
-         * time : 2017-04-01 12:00:00
+         * time : 2017-04-bg1 12:00:00
          * state : 0
          */
 

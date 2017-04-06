@@ -1,7 +1,7 @@
 package com.njtech.bigclass.entity;
 
 /**
- * Created by wangyu on 03/04/2017.
+ * Created by wangyu on bg3/04/2017.
  */
 
 public class ObjEntity {

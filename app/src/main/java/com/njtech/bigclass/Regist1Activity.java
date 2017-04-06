@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by wangyu on 02/04/2017.
+ * Created by wangyu on bg2/04/2017.
  */
 
 public class Regist1Activity extends AppCompatActivity {

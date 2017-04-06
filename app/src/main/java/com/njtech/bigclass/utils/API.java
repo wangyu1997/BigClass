@@ -16,7 +16,7 @@ import rx.Observable;
 
 
 public interface API {
-    String BASE_URL = "http://119.29.97.151/BigClass/";
+    String BASE_URL = "http://119.29.97.151/BigClass1/";
 
     //七牛 token
     @FormUrlEncoded

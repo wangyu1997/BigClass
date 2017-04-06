@@ -10,7 +10,7 @@ public class DataBean {
      * email : wangyu19970819@qq.com
      * header : http:dsads
      * sex : 1
-     * createTime : 2017-04-02 09:51:56
+     * createTime : 2017-04-bg2 09:51:56
      */
 
     private String uid = "";

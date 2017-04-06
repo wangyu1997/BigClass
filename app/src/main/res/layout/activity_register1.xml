@@ -19,9 +19,7 @@
         android:navigationIcon="@mipmap/nva_con"
         app:layout_scrollFlags="scroll|enterAlways"
         app:navigationIcon="@mipmap/nva_con"
-        app:popupTheme="@style/AppTheme.PopupOverlay"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1">
+        app:popupTheme="@style/AppTheme.PopupOverlay">
 
         <TextView
             android:layout_width="wrap_content"
