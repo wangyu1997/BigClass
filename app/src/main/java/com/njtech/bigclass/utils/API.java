@@ -3,6 +3,8 @@ package com.njtech.bigclass.utils;
 
 import com.njtech.bigclass.entity.AcademysEntity;
 import com.njtech.bigclass.entity.ArrayEntity;
+import com.njtech.bigclass.entity.Info_entity;
+import com.njtech.bigclass.entity.ObjEntity;
 import com.njtech.bigclass.entity.StringEntity;
 import com.njtech.bigclass.entity.LoginEntity;
 import com.njtech.bigclass.entity.RegistEntity;
@@ -61,5 +63,20 @@ public interface API {
     @FormUrlEncoded
     @POST("public/allcourses.php")
     Observable<courseShowEntity> getCourses(@Field("aid") int aid);
+
+    //检查课程是否自己开设
+    @FormUrlEncoded
+    @POST("teacher/check.php")
+    Observable<ObjEntity> checkCourses(@Field("cid") int cid);
+
+    //发起结束签到
+    @FormUrlEncoded
+    @POST("teacher/sign.php")
+    Observable<ObjEntity> sign(@Field("cid") int cid,@Field("action") String action);
+
+    //获取课程详情
+    @FormUrlEncoded
+    @POST("public/Info.php")
+    Observable<Info_entity> courseInfo(@Field("id") int id);
 
 }

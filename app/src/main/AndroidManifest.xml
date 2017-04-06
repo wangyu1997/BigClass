@@ -39,5 +39,6 @@
             android:name=".PersonActivity"
             android:launchMode="singleTask"
             android:theme="@style/Theme"></activity>
+        <activity android:name=".CourseInfoActivity"></activity>
     </application>
 </manifest>

@@ -3,7 +3,6 @@ package com.njtech.bigclass.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -12,22 +11,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.njtech.bigclass.AcademySelectActivity;
+import com.njtech.bigclass.CourseInfoActivity;
 import com.njtech.bigclass.FootTextInterFace;
 import com.njtech.bigclass.HomePageActivity;
 import com.njtech.bigclass.R;
-import com.njtech.bigclass.entity.AcademysEntity;
 import com.njtech.bigclass.entity.courseShowEntity.DataBean;
-import com.njtech.bigclass.utils.MyApplication;
-
-import org.w3c.dom.Text;
 
 public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -62,7 +55,7 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         notifyDataSetChanged();
     }
 
-    public void setInterFace(FootTextInterFace interFace){
+    public void setInterFace(FootTextInterFace interFace) {
         this.interFace = interFace;
     }
 
@@ -110,7 +103,7 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             }
         }
         if ((position != objects.size() + 1) && (position != 0)) {
-            DataBean object = objects.get(position - 1);
+            final DataBean object = objects.get(position - 1);
             String courseName = object.getC_name();
             String headUrl = object.getHeader();
             String teacherName = object.getTeacher();
@@ -119,15 +112,24 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             String grade = object.getGpa();
             String number = object.getNumber();
             if (holder instanceof ViewHolder) {
+                ((ViewHolder) holder).course_layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String cid = object.getId();
+                        Intent intent = new Intent(context, CourseInfoActivity.class);
+                        intent.putExtra("cid", cid);
+                        context.startActivity(intent);
+                    }
+                });
                 if (headUrl == null || !headUrl.contains("http://") || headUrl.isEmpty()) {
                     ((ViewHolder) holder).courseIcon.setImageResource(R.mipmap.logo);
                 } else {
                     Uri imgUri = Uri.parse(headUrl);
                     ((ViewHolder) holder).courseIcon.setImageURI(imgUri);
                 }
-                if (courseName.length()>8){
-                    courseName = courseName.substring(0,8);
-                    courseName+= "...";
+                if (courseName.length() > 8) {
+                    courseName = courseName.substring(0, 8);
+                    courseName += "...";
                 }
                 ((ViewHolder) holder).tvCoursename.setText(courseName);
                 ((ViewHolder) holder).tvTeacher.setText(teacherName);
@@ -183,9 +185,11 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         private TextView tvGrade;
         private TextView tvStudentnumber;
         private SimpleDraweeView courseState;
+        private RelativeLayout course_layout;
 
         public ViewHolder(View view) {
             super(view);
+            course_layout = (RelativeLayout) view.findViewById(R.id.course_layout);
             tvCoursename = (TextView) view.findViewById(R.id.tv_coursename);
             courseIcon = (SimpleDraweeView) view.findViewById(R.id.course_icon);
             tvTeacher = (TextView) view.findViewById(R.id.tv_teacher);
