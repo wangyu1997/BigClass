@@ -1,8 +1,5 @@
 package com.njtech.bigclass.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -11,35 +8,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.njtech.bigclass.AddClassActivity;
 import com.njtech.bigclass.HomePageActivity;
 import com.njtech.bigclass.R;
 import com.njtech.bigclass.Regist1Activity;
-import com.njtech.bigclass.entity.AcademysEntity.DataBean;
+import com.njtech.bigclass.entity.CourseEntity.DataBean;
 import com.njtech.bigclass.utils.ListViewUtil;
 
-public class ListAcademyGroupItemAdapter extends BaseAdapter {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ListCourseGroupItemAdapter extends BaseAdapter {
 
     private List<DataBean> objects = new ArrayList<DataBean>();
 
     private LayoutInflater layoutInflater;
     private AppCompatActivity context;
     private ListAcademyListItemAdapter adapter;
-    private int flag = -1;
 
 
-    public ListAcademyGroupItemAdapter(Context context, List<DataBean> objects) {
+    public ListCourseGroupItemAdapter(Context context, List<DataBean> objects) {
         this.context = (AppCompatActivity) context;
         this.layoutInflater = LayoutInflater.from(context);
         this.objects = objects;
     }
 
-    public void setFlag(int flag) {
-        this.flag = flag;
-    }
 
     @Override
     public int getCount() {
@@ -59,7 +55,7 @@ public class ListAcademyGroupItemAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.list_academy_group_item, null);
+            convertView = layoutInflater.inflate(R.layout.list_course_group_item, null);
             convertView.setTag(new ViewHolder(convertView));
         }
         initializeViews((DataBean) getItem(position), (ViewHolder) convertView.getTag());
@@ -68,46 +64,35 @@ public class ListAcademyGroupItemAdapter extends BaseAdapter {
 
     private void initializeViews(DataBean object, ViewHolder holder) {
         //TODO implement
-        holder.tvAcademyGroup.setText(object.getKey());
+        holder.tvCourseGroup.setText(object.getKey());
         adapter = new ListAcademyListItemAdapter(context, object.getInfo());
         final List<DataBean.InfoBean> objects = object.getInfo();
-        holder.academyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        holder.courseList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DataBean.InfoBean bean = objects.get(position);
-                int academy_id = Integer.parseInt(bean.getId());
-                String academy_name = bean.getName();
-                if (flag == 2) {
-                    Intent intent = new Intent(context, HomePageActivity.class);
-                    intent.putExtra("academy_id", academy_id);
-                    intent.putExtra("academy_name", academy_name);
-                    context.setResult(HomePageActivity.Academy_res, intent);
-                } else if (flag == 3) {
-                    Intent intent = new Intent(context,AddClassActivity.class);
-                    intent.putExtra("academy_id", academy_id);
-                    intent.putExtra("academy_name", academy_name);
-                    context.setResult(AddClassActivity.Academy_res, intent);
-                } else {
-                    Intent intent = new Intent(context, Regist1Activity.class);
-                    intent.putExtra("academy_id", academy_id);
-                    intent.putExtra("academy_name", academy_name);
-                    context.setResult(Regist1Activity.academy_res, intent);
-                }
-
+                int course_id = Integer.parseInt(bean.getId());
+                String course_name = bean.getName();
+                String gpa = bean.getGpa();
+                Intent intent = new Intent(context, AddClassActivity.class);
+                intent.putExtra("course_id", course_id);
+                intent.putExtra("course_name", course_name);
+                intent.putExtra("course_gpa", gpa);
+                context.setResult(AddClassActivity.Course_res, intent);
                 context.finish();
             }
         });
-        holder.academyList.setAdapter(adapter);
-        ListViewUtil.setListViewHeightBasedOnChildren(holder.academyList);
+        holder.courseList.setAdapter(adapter);
+        ListViewUtil.setListViewHeightBasedOnChildren(holder.courseList);
     }
 
     protected class ViewHolder {
-        private TextView tvAcademyGroup;
-        private ListView academyList;
+        private TextView tvCourseGroup;
+        private ListView courseList;
 
         public ViewHolder(View view) {
-            tvAcademyGroup = (TextView) view.findViewById(R.id.tv_academy_group);
-            academyList = (ListView) view.findViewById(R.id.academy_list);
+            tvCourseGroup = (TextView) view.findViewById(R.id.tv_course_group);
+            courseList = (ListView) view.findViewById(R.id.course_list);
         }
     }
 
@@ -142,7 +127,7 @@ public class ListAcademyGroupItemAdapter extends BaseAdapter {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = layoutInflater.inflate(R.layout.list_academy_list_item, null);
+                convertView = layoutInflater.inflate(R.layout.list_course_list_item, null);
                 convertView.setTag(new ViewHolder(convertView));
             }
             initializeViews((DataBean.InfoBean) getItem(position), (ViewHolder) convertView.getTag());
@@ -151,14 +136,14 @@ public class ListAcademyGroupItemAdapter extends BaseAdapter {
 
         private void initializeViews(DataBean.InfoBean object, ViewHolder holder) {
             //TODO implement
-            holder.tvAcademyGroupItem.setText(object.getName());
+            holder.tvCourseGroupItem.setText(object.getName());
         }
 
         protected class ViewHolder {
-            private TextView tvAcademyGroupItem;
+            private TextView tvCourseGroupItem;
 
             public ViewHolder(View view) {
-                tvAcademyGroupItem = (TextView) view.findViewById(R.id.tv_academy_group_item);
+                tvCourseGroupItem = (TextView) view.findViewById(R.id.tv_course_group_item);
             }
         }
     }

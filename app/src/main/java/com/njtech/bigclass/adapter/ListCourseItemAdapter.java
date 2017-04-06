@@ -21,6 +21,7 @@ import com.njtech.bigclass.FootTextInterFace;
 import com.njtech.bigclass.HomePageActivity;
 import com.njtech.bigclass.R;
 import com.njtech.bigclass.entity.courseShowEntity.DataBean;
+import com.njtech.bigclass.utils.RecyclerOnItemClickListener;
 
 public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -34,7 +35,11 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private static final int footType = 908;
     private static final int headType = 167;
     public FootTextInterFace interFace;
+    private RecyclerOnItemClickListener mItemClickListener;
 
+    public void setRecyclerOnItemClickListener(RecyclerOnItemClickListener onItemClickListener) {
+        this.mItemClickListener = onItemClickListener;
+    }
 
     public ListCourseItemAdapter(AppCompatActivity context, List<DataBean> objects, int aid, String aname) {
         this.objects = objects;
@@ -86,7 +91,7 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (position == 0) {
             if (holder instanceof HeadHolder) {
                 ((HeadHolder) holder).tv_title.setText(aname);
@@ -112,15 +117,6 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             String grade = object.getGpa();
             String number = object.getNumber();
             if (holder instanceof ViewHolder) {
-                ((ViewHolder) holder).course_layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String cid = object.getId();
-                        Intent intent = new Intent(context, CourseInfoActivity.class);
-                        intent.putExtra("cid", cid);
-                        context.startActivity(intent);
-                    }
-                });
                 if (headUrl == null || !headUrl.contains("http://") || headUrl.isEmpty()) {
                     ((ViewHolder) holder).courseIcon.setImageResource(R.mipmap.logo);
                 } else {
@@ -137,6 +133,21 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 ((ViewHolder) holder).tvPlace.setText(place);
                 ((ViewHolder) holder).tvTime.setText(time);
                 ((ViewHolder) holder).tvStudentnumber.setText(number);
+            }
+            if (mItemClickListener != null) {
+                ((ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mItemClickListener.onItemClick(v, position);
+                    }
+                });
+                ((ViewHolder) holder).itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        mItemClickListener.onItemLongClick(v, position);
+                        return true;
+                    }
+                });
             }
         }
         if (position == objects.size() + 1) {
@@ -185,11 +196,9 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         private TextView tvGrade;
         private TextView tvStudentnumber;
         private SimpleDraweeView courseState;
-        private RelativeLayout course_layout;
 
         public ViewHolder(View view) {
             super(view);
-            course_layout = (RelativeLayout) view.findViewById(R.id.course_layout);
             tvCoursename = (TextView) view.findViewById(R.id.tv_coursename);
             courseIcon = (SimpleDraweeView) view.findViewById(R.id.course_icon);
             tvTeacher = (TextView) view.findViewById(R.id.tv_teacher);

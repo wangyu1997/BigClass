@@ -11,10 +11,15 @@
     <color name="textcolor4">#F3F3F3</color>
     <color name="textcolor5">#FFAA66CC</color>
     <color name="transprant">#00000000</color>
+    <color name="textcolor6">#cea6e4</color>
+    <color name="divider">#a8a8a8</color>
+    <color name="btn_text">#eb91010b</color>
+
     <color name="black_semi_transparent">#B2000000</color>
     <color name="background">#F3F3F3</color>
     <color name="half_black">#808080</color>
     <color name="white">#ffffffff</color>
+    <color name="white_opc">#19ffffff</color>
     <color name="white_pressed">#f1f1f1</color>
     <color name="pink">#e91e63</color>
     <color name="pink_pressed">#ec407a</color>
@@ -520,6 +525,5 @@
     <color name="counter_text_bg">#626262</color>
     <color name="counter_text_color">#c5c4c4</color>
     <color name="school_group_bg">#F3F3F3</color>
-
 
 </resources>

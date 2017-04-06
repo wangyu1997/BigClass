@@ -27,6 +27,7 @@ import com.njtech.bigclass.entity.courseShowEntity;
 import com.njtech.bigclass.utils.API;
 import com.njtech.bigclass.utils.AppManager;
 import com.njtech.bigclass.utils.HttpControl;
+import com.njtech.bigclass.utils.RecyclerOnItemClickListener;
 import com.njtech.bigclass.utils.ScrollUtil;
 
 import java.util.ArrayList;
@@ -121,6 +122,23 @@ public class HomePageActivity extends AppCompatActivity {
                 }
             }
         };
+        adapter.setRecyclerOnItemClickListener(new RecyclerOnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                String courseid = datas.get(position - 1).getId();
+                Intent intent = new Intent(HomePageActivity.this, CourseInfoActivity.class);
+                intent.putExtra("cid", courseid);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                String courseid = datas.get(position - 1).getId();
+                Intent intent = new Intent(HomePageActivity.this, CourseInfoActivity.class);
+                intent.putExtra("cid", courseid);
+                startActivity(intent);
+            }
+        });
         progressBar.setVisibility(View.VISIBLE);
         adapter.setInterFace(interFace);
         courseList.setOnScrollListener(new ScrollUtil.inVisibleScorllListener() {
@@ -207,6 +225,6 @@ public class HomePageActivity extends AppCompatActivity {
 
     @OnClick(R.id.fab)
     public void onViewClicked() {
-        Toast.makeText(this, "添加课程", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(this,AddClassActivity.class));
     }
 }

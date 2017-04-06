@@ -2,7 +2,9 @@ package com.njtech.bigclass.utils;
 
 
 import com.njtech.bigclass.entity.AcademysEntity;
+import com.njtech.bigclass.entity.AddEntity;
 import com.njtech.bigclass.entity.ArrayEntity;
+import com.njtech.bigclass.entity.CourseEntity;
 import com.njtech.bigclass.entity.Info_entity;
 import com.njtech.bigclass.entity.ObjEntity;
 import com.njtech.bigclass.entity.StringEntity;
@@ -10,8 +12,11 @@ import com.njtech.bigclass.entity.LoginEntity;
 import com.njtech.bigclass.entity.RegistEntity;
 import com.njtech.bigclass.entity.courseShowEntity;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import rx.Observable;
@@ -27,6 +32,10 @@ public interface API {
 
     @POST("public/academys.php")
     Observable<AcademysEntity> getAcademys();
+
+    @FormUrlEncoded
+    @POST("public/courses.php")
+    Observable<CourseEntity> getCoursesInfo(@Field("id") int id);
 
     //注册 请求验证码接口
     @FormUrlEncoded
@@ -78,5 +87,13 @@ public interface API {
     @FormUrlEncoded
     @POST("public/Info.php")
     Observable<Info_entity> courseInfo(@Field("id") int id);
+
+    //添加课程
+    @FormUrlEncoded
+    @POST("teacher/add.php")
+    Observable<AddEntity> addCourse(@FieldMap Map<String,Object> map);
+
+
+
 
 }

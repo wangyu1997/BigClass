@@ -13,8 +13,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.njtech.bigclass.adapter.ListAcademyGroupItemAdapter;
-import com.njtech.bigclass.entity.AcademysEntity;
+import com.njtech.bigclass.adapter.ListCourseGroupItemAdapter;
+import com.njtech.bigclass.entity.CourseEntity;
 import com.njtech.bigclass.utils.API;
 import com.njtech.bigclass.utils.AppManager;
 import com.njtech.bigclass.utils.HttpControl;
@@ -34,19 +34,19 @@ import static rx.schedulers.Schedulers.io;
  * Created by wangyu on 9/2/16.
  */
 
-public class AcademySelectActivity extends AppCompatActivity {
+public class CourseSelectActivity extends AppCompatActivity {
 
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.academy_group_list)
-    ListView academyGroupList;
+    @BindView(R.id.course_group_list)
+    ListView courseGroupList;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     private AppCompatActivity context;
-    private List<AcademysEntity.DataBean> dataList;
-    private ListAcademyGroupItemAdapter adapter;
-    private int flag;
+    private List<CourseEntity.DataBean> dataList;
+    private ListCourseGroupItemAdapter adapter;
+    private int aid;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,8 @@ public class AcademySelectActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS}, 1);
         }
-        setContentView(R.layout.activity_academy_select);
+        aid = getIntent().getIntExtra("aid", -1);
+        setContentView(R.layout.activity_course_select);
         AppManager.getAppManager().addActivity(this);
         ButterKnife.bind(this);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -75,19 +76,18 @@ public class AcademySelectActivity extends AppCompatActivity {
         dataList = new ArrayList<>();
         Toast.makeText(context, "正在加载中...", Toast.LENGTH_SHORT).show();
         progressBar.setVisibility(View.VISIBLE);
-        getSchoolList();
-        flag = getIntent().getIntExtra("flag", -1);
+        getCourseList(aid);
     }
 
 
-    public void getSchoolList() {
+    public void getCourseList(int aid) {
         Retrofit retrofit = HttpControl.getInstance().getRetrofit();
         API api = retrofit.create(API.class);
-        api.getAcademys()
+        api.getCoursesInfo(aid)
                 .subscribeOn(io())
                 .unsubscribeOn(io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<AcademysEntity>() {
+                .subscribe(new Subscriber<CourseEntity>() {
                     @Override
                     public void onCompleted() {
                         progressBar.setVisibility(View.GONE);
@@ -95,25 +95,23 @@ public class AcademySelectActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        Toast.makeText(AcademySelectActivity.this, "学院信息加载失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CourseSelectActivity.this, "课程信息加载失败", Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.GONE);
                     }
 
                     @Override
-                    public void onNext(AcademysEntity academyListModel) {
-                        if (!academyListModel.isError()) {
-                            initSchoolList(academyListModel.getData());
-                        }else {
-                            Toast.makeText(AcademySelectActivity.this, "学院信息加载失败", Toast.LENGTH_SHORT).show();
+                    public void onNext(CourseEntity courseEntity) {
+                        if (!courseEntity.isError()) {
+                            initCourseList(courseEntity.getData());
+                        } else {
+                            Toast.makeText(CourseSelectActivity.this, "课程信息加载失败", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
-    public void initSchoolList(List<AcademysEntity.DataBean> data) {
-        adapter = new ListAcademyGroupItemAdapter(this, data);
-        if (flag != -1)
-            adapter.setFlag(flag);
-        academyGroupList.setAdapter(adapter);
+    public void initCourseList(List<CourseEntity.DataBean> data) {
+        adapter = new ListCourseGroupItemAdapter(this, data);
+        courseGroupList.setAdapter(adapter);
     }
 }

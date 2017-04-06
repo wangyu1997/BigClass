@@ -217,10 +217,4 @@
         fresco:roundWithOverlayColor="@color/transprant"
         fresco:roundedCornerRadius="10dp"
         fresco:viewAspectRatio="1.4" />
-
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/transprant"
-    android:id="@+id/course_layout"/>
 </RelativeLayout>
