@@ -7,6 +7,7 @@ import com.njtech.bigclass.entity.ArrayEntity;
 import com.njtech.bigclass.entity.CourseEntity;
 import com.njtech.bigclass.entity.Info_entity;
 import com.njtech.bigclass.entity.ObjEntity;
+import com.njtech.bigclass.entity.SignHistoryEntity;
 import com.njtech.bigclass.entity.StringEntity;
 import com.njtech.bigclass.entity.LoginEntity;
 import com.njtech.bigclass.entity.RegistEntity;
@@ -93,7 +94,15 @@ public interface API {
     @POST("teacher/add.php")
     Observable<AddEntity> addCourse(@FieldMap Map<String,Object> map);
 
+    @FormUrlEncoded
+    @POST("public/detail.php")
+    Observable<SignHistoryEntity> getSignHistory(@Field("cid") int cid);
 
+    @FormUrlEncoded
+    @POST("teacher/delete.php")
+    Observable<ArrayEntity> deleteCourse(@Field("id") int cid);
 
-
+    @FormUrlEncoded
+    @POST("teacher/update.php")
+    Observable<ArrayEntity> updateCourse(@FieldMap Map<String,Object> map);
 }

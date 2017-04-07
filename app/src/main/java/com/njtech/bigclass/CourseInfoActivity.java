@@ -1,6 +1,7 @@
 package com.njtech.bigclass;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,11 +22,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.njtech.bigclass.PopUpWindow.Action_PopUp;
+import com.njtech.bigclass.PopUpWindow.Comfirm_PopUp;
+import com.njtech.bigclass.entity.ArrayEntity;
 import com.njtech.bigclass.entity.Info_entity;
 import com.njtech.bigclass.entity.ObjEntity;
 import com.njtech.bigclass.utils.API;
 import com.njtech.bigclass.utils.AppManager;
 import com.njtech.bigclass.utils.HttpControl;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -89,6 +97,9 @@ public class CourseInfoActivity extends AppCompatActivity {
     private int cid = -1;
     private static final int courseInfoMsg = 555;
     private int number = -1;
+    private Action_PopUp action_popUp;
+    private Comfirm_PopUp comfirm_popUp;
+    private Map<String,Object> map;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,13 +113,13 @@ public class CourseInfoActivity extends AppCompatActivity {
     public void init() {
         isMine = false;
         toolbar.setTitle("");
+        setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        setSupportActionBar(toolbar);
         progressBar.setVisibility(View.VISIBLE);
         cid = Integer.parseInt(getIntent().getStringExtra("cid"));
         refresh.setDistanceToTriggerSync(400);// 设置手指在屏幕下拉多少距离会触发下拉刷新
@@ -254,12 +265,16 @@ public class CourseInfoActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_action) {
-            Toast.makeText(this, "功能键", Toast.LENGTH_SHORT).show();
+            if (isMine&&info_Data!=null) {
+                action_popUp = new Action_PopUp(info_Data.getState(), CourseInfoActivity.this, new Pop_onclick());
+                action_popUp.showAtLocation(findViewById(R.id.course_info), Gravity.BOTTOM, 0, 0);
+            }else {
+                Toast.makeText(this, "您没有权限操作本课程", Toast.LENGTH_SHORT).show();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -338,16 +353,127 @@ public class CourseInfoActivity extends AppCompatActivity {
         }
     }
 
+
+    public class Pop_onclick implements View.OnClickListener{
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.statue_btn:
+                    if (info_Data!=null){
+                        if(info_Data.getState().equals("0")) {
+                            map = new HashMap<>();
+                            map.put("state","1");
+                            map.put("id",cid);
+                            update(map);
+
+                        }
+                        if(info_Data.getState().equals("1")){
+                            map = new HashMap<>();
+                            map.put("state","2");
+                            map.put("id",cid);
+                            update(map);
+                        }
+                    }
+                    action_popUp.dismiss();
+                    break;
+                case R.id.delete_btn:
+                    action_popUp.dismiss();
+                    comfirm_popUp = new Comfirm_PopUp(CourseInfoActivity.this, new Pop_onclick());
+                    comfirm_popUp.showAtLocation(findViewById(R.id.course_info), Gravity.BOTTOM, 0, 0);
+                    break;
+                case R.id.comfirm_btn:
+                    comfirm_popUp.dismiss();
+                    delete();
+                    break;
+            }
+        }
+    }
+
+
+    public void delete(){
+        progressBar.setVisibility(View.VISIBLE);
+        Toast.makeText(this, "正在删除,请稍后...", Toast.LENGTH_SHORT).show();
+        Retrofit retrofit = HttpControl.getInstance().getRetrofit();
+        API api = retrofit.create(API.class);
+        api.deleteCourse(Integer.parseInt(info_Data.getId()))
+                .subscribeOn(io())
+                .unsubscribeOn(io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ArrayEntity>() {
+                    @Override
+                    public void onCompleted() {
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(CourseInfoActivity.this, "删除失败,请稍后再试", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onNext(ArrayEntity arrayEntity) {
+                        if (arrayEntity.isError()){
+                            Toast.makeText(CourseInfoActivity.this, "删除失败,请稍后再试", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(CourseInfoActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }
+                });
+    }
+
+
     @OnClick({R.id.join_layout, R.id.sign_btn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.join_layout:
-                if (number>0)
-                    Toast.makeText(this, "签到记录", Toast.LENGTH_SHORT).show();
+                if (number > 0) {
+                    Intent intent = new Intent(CourseInfoActivity.this,
+                            SignHistoryActivity.class);
+                    intent.putExtra("cid", cid);
+                    intent.putExtra("coursename", courseName.getText().toString());
+                    startActivity(intent);
+                }
                 break;
             case R.id.sign_btn:
                 sign(cid);
                 break;
         }
+    }
+
+
+    public void update(Map<String,Object> map){
+        progressBar.setVisibility(View.VISIBLE);
+        Toast.makeText(this, "正在修改,请稍后...", Toast.LENGTH_SHORT).show();
+        Retrofit retrofit = HttpControl.getInstance().getRetrofit();
+        API api = retrofit.create(API.class);
+        api.updateCourse(map)
+                .subscribeOn(io())
+                .unsubscribeOn(io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ArrayEntity>() {
+                    @Override
+                    public void onCompleted() {
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(CourseInfoActivity.this, "修改失败请稍后再试...", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onNext(ArrayEntity arrayEntity) {
+                        if (arrayEntity.isError()){
+                            Toast.makeText(CourseInfoActivity.this, "修改失败请稍后再试...", Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(CourseInfoActivity.this, "修改成功，正在刷新信息", Toast.LENGTH_SHORT).show();
+                            getInfo(cid);
+                        }
+                    }
+                });
     }
 }

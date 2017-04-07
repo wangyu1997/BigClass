@@ -45,5 +45,6 @@
         <activity android:name=".CourseSelectActivity"></activity>
         <activity android:name=".WifiActivity">
         </activity>
+        <activity android:name=".SignHistoryActivity"></activity>
     </application>
 </manifest>
