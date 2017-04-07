@@ -41,6 +41,11 @@
         <item name="colorControlActivated">@color/app_primary_dark</item>
     </style>
 
+    <style name="MyEditText1" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/transprant</item>
+        <item name="colorControlActivated">@color/transprant</item>
+    </style>
+
     <style name="AppTheme.TranslucentStatus" parent="Theme.AppCompat.Light">
         <!-- Status Bar -->
         <item name="android:windowTranslucentStatus">true</item>

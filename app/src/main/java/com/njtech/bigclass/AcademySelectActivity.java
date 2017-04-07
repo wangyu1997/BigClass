@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.njtech.bigclass.adapter.ListAcademyGroupItemAdapter;
@@ -40,10 +41,12 @@ public class AcademySelectActivity extends AppCompatActivity {
     Toolbar toolbar;
     @BindView(R.id.academy_group_list)
     ListView academyGroupList;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
     private AppCompatActivity context;
     private List<AcademysEntity.DataBean> dataList;
     private ListAcademyGroupItemAdapter adapter;
-    private boolean flag;
+    private int flag;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,10 +66,17 @@ public class AcademySelectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_academy_select);
         AppManager.getAppManager().addActivity(this);
         ButterKnife.bind(this);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         dataList = new ArrayList<>();
+        Toast.makeText(context, "正在加载中...", Toast.LENGTH_SHORT).show();
+        progressBar.setVisibility(View.VISIBLE);
         getSchoolList();
-        if (getIntent().getIntExtra("flag", -1) != -1)
-            flag = true;
+        flag = getIntent().getIntExtra("flag", -1);
     }
 
 
@@ -80,17 +90,21 @@ public class AcademySelectActivity extends AppCompatActivity {
                 .subscribe(new Subscriber<AcademysEntity>() {
                     @Override
                     public void onCompleted() {
+                        progressBar.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Toast.makeText(AcademySelectActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AcademySelectActivity.this, "学院信息加载失败", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onNext(AcademysEntity academyListModel) {
                         if (!academyListModel.isError()) {
                             initSchoolList(academyListModel.getData());
+                        }else {
+                            Toast.makeText(AcademySelectActivity.this, "学院信息加载失败", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -98,7 +112,7 @@ public class AcademySelectActivity extends AppCompatActivity {
 
     public void initSchoolList(List<AcademysEntity.DataBean> data) {
         adapter = new ListAcademyGroupItemAdapter(this, data);
-        if (flag)
+        if (flag != -1)
             adapter.setFlag(flag);
         academyGroupList.setAdapter(adapter);
     }

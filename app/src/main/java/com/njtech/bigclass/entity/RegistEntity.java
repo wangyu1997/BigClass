@@ -1,14 +1,14 @@
 package com.njtech.bigclass.entity;
 
 /**
- * Created by wangyu on 03/04/2017.
+ * Created by wangyu on bg3/04/2017.
  */
 
 public class RegistEntity {
     /**
      * error : false
      * msg : ok
-     * data : {"uid":"58e1d8206553b","username":"wyy","aid":"1","a_name":"计算机科学与技术学院","name":"人不如故","email":"wangyu19970819@gmail.com","sex":"1","createTime":"2017-04-03 05:05:36"}
+     * data : {"uid":"58e1d8206553b","username":"wyy","aid":"1","a_name":"计算机科学与技术学院","name":"人不如故","email":"wangyu19970819@gmail.com","sex":"1","createTime":"2017-04-bg3 05:05:36"}
      */
 
     private boolean error;
@@ -48,7 +48,7 @@ public class RegistEntity {
          * name : 人不如故
          * email : wangyu19970819@gmail.com
          * sex : 1
-         * createTime : 2017-04-03 05:05:36
+         * createTime : 2017-04-bg3 05:05:36
          */
 
         private String uid;

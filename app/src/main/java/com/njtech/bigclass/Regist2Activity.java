@@ -40,7 +40,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import static rx.schedulers.Schedulers.io;
 
 /**
- * Created by wangyu on 02/04/2017.
+ * Created by wangyu on bg2/04/2017.
  */
 
 public class Regist2Activity extends AppCompatActivity {

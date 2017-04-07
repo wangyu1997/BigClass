@@ -3,7 +3,6 @@ package com.njtech.bigclass.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -12,22 +11,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.njtech.bigclass.AcademySelectActivity;
+import com.njtech.bigclass.CourseInfoActivity;
 import com.njtech.bigclass.FootTextInterFace;
 import com.njtech.bigclass.HomePageActivity;
 import com.njtech.bigclass.R;
-import com.njtech.bigclass.entity.AcademysEntity;
 import com.njtech.bigclass.entity.courseShowEntity.DataBean;
-import com.njtech.bigclass.utils.MyApplication;
-
-import org.w3c.dom.Text;
+import com.njtech.bigclass.utils.RecyclerOnItemClickListener;
 
 public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -41,7 +35,11 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private static final int footType = 908;
     private static final int headType = 167;
     public FootTextInterFace interFace;
+    private RecyclerOnItemClickListener mItemClickListener;
 
+    public void setRecyclerOnItemClickListener(RecyclerOnItemClickListener onItemClickListener) {
+        this.mItemClickListener = onItemClickListener;
+    }
 
     public ListCourseItemAdapter(AppCompatActivity context, List<DataBean> objects, int aid, String aname) {
         this.objects = objects;
@@ -62,7 +60,7 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         notifyDataSetChanged();
     }
 
-    public void setInterFace(FootTextInterFace interFace){
+    public void setInterFace(FootTextInterFace interFace) {
         this.interFace = interFace;
     }
 
@@ -93,7 +91,7 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (position == 0) {
             if (holder instanceof HeadHolder) {
                 ((HeadHolder) holder).tv_title.setText(aname);
@@ -110,7 +108,7 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             }
         }
         if ((position != objects.size() + 1) && (position != 0)) {
-            DataBean object = objects.get(position - 1);
+            final DataBean object = objects.get(position - 1);
             String courseName = object.getC_name();
             String headUrl = object.getHeader();
             String teacherName = object.getTeacher();
@@ -125,9 +123,9 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     Uri imgUri = Uri.parse(headUrl);
                     ((ViewHolder) holder).courseIcon.setImageURI(imgUri);
                 }
-                if (courseName.length()>8){
-                    courseName = courseName.substring(0,8);
-                    courseName+= "...";
+                if (courseName.length() > 8) {
+                    courseName = courseName.substring(0, 8);
+                    courseName += "...";
                 }
                 ((ViewHolder) holder).tvCoursename.setText(courseName);
                 ((ViewHolder) holder).tvTeacher.setText(teacherName);
@@ -135,6 +133,21 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 ((ViewHolder) holder).tvPlace.setText(place);
                 ((ViewHolder) holder).tvTime.setText(time);
                 ((ViewHolder) holder).tvStudentnumber.setText(number);
+            }
+            if (mItemClickListener != null) {
+                ((ViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mItemClickListener.onItemClick(v, position);
+                    }
+                });
+                ((ViewHolder) holder).itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        mItemClickListener.onItemLongClick(v, position);
+                        return true;
+                    }
+                });
             }
         }
         if (position == objects.size() + 1) {

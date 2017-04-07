@@ -30,36 +30,64 @@
         <item>♂ 男生</item>
         <item>♀ 女生</item>
     </string-array>
-    <string-array name="grade">
-        <item>1301</item>
-        <item>1302</item>
-        <item>1303</item>
-        <item>1304</item>
-        <item>1305</item>
-        <item>1306</item>
-        <item>1401</item>
-        <item>1402</item>
-        <item>1403</item>
-        <item>1404</item>
-        <item>1405</item>
-        <item>1406</item>
-        <item>1501</item>
-        <item>1502</item>
-        <item>1503</item>
-        <item>1504</item>
-        <item>1505</item>
-        <item>1506</item>
-        <item>1601</item>
-        <item>1602</item>
-        <item>1603</item>
-        <item>1604</item>
-        <item>1605</item>
-        <item>1606</item>
-        <item>1701</item>
-        <item>1702</item>
-        <item>1703</item>
-        <item>1704</item>
-        <item>1705</item>
-        <item>1706</item>
+    <string-array name="week">
+        <item>第1周</item>
+        <item>第2周</item>
+        <item>第3周</item>
+        <item>第4周</item>
+        <item>第5周</item>
+        <item>第6周</item>
+        <item>第7周</item>
+        <item>第8周</item>
+        <item>第9周</item>
+        <item>第10周</item>
+        <item>第11周</item>
+        <item>第12周</item>
+        <item>第13周</item>
+        <item>第14周</item>
+        <item>第15周</item>
+        <item>第16周</item>
+        <item>第17周</item>
+        <item>第18周</item>
+        <item>第19周</item>
+        <item>第20周</item>
+        <item>第21周</item>
+        <item>第22周</item>
+    </string-array>
+    <string-array name="day">
+        <item>周一</item>
+        <item>周二</item>
+        <item>周三</item>
+        <item>周四</item>
+        <item>周五</item>
+        <item>周六</item>
+        <item>周七</item>
+    </string-array>
+
+    <string-array name="num">
+        <item>第1节</item>
+        <item>第2节</item>
+        <item>第3节</item>
+        <item>第4节</item>
+        <item>第5节</item>
+        <item>第6节</item>
+        <item>第7节</item>
+        <item>第8节</item>
+        <item>第9节</item>
+        <item>第10节</item>
+        <item>第11节</item>
+    </string-array>
+
+    <string-array name="place">
+        <item>明德</item>
+        <item>厚学</item>
+        <item>沉毅</item>
+        <item>笃行</item>
+        <item>同和</item>
+        <item>仁智</item>
+        <item>浦江A</item>
+        <item>浦江B</item>
+        <item>浦江C</item>
+        <item>计算机中心</item>
     </string-array>
 </resources>

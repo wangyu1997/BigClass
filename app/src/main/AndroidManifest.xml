@@ -39,5 +39,12 @@
             android:name=".PersonActivity"
             android:launchMode="singleTask"
             android:theme="@style/Theme"></activity>
+        <activity android:name=".CourseInfoActivity"></activity>
+        <activity android:name=".AddClassActivity">
+        </activity>
+        <activity android:name=".CourseSelectActivity"></activity>
+        <activity android:name=".WifiActivity">
+        </activity>
+        <activity android:name=".SignHistoryActivity"></activity>
     </application>
 </manifest>

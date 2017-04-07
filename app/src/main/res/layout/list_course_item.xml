@@ -217,6 +217,4 @@
         fresco:roundWithOverlayColor="@color/transprant"
         fresco:roundedCornerRadius="10dp"
         fresco:viewAspectRatio="1.4" />
-
-
 </RelativeLayout>

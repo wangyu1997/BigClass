@@ -1,14 +1,14 @@
 package com.njtech.bigclass.entity;
 
 /**
- * Created by wangyu on 03/04/2017.
+ * Created by wangyu on bg3/04/2017.
  */
 
 public class LoginEntity {
     /**
      * error : false
      * msg : ok
-     * data : {"uid":"58e0c9bc135d2","username":"wyyy","aid":"1","a_name":"计算机科学与技术学院","name":"人不如故","email":"wangyu19970819@qq.com","header":"http:dsads","sex":"1","createTime":"2017-04-02 09:51:56"}
+     * data : {"uid":"58e0c9bc135d2","username":"wyyy","aid":"1","a_name":"计算机科学与技术学院","name":"人不如故","email":"wangyu19970819@qq.com","header":"http:dsads","sex":"1","createTime":"2017-04-bg2 09:51:56"}
      */
 
     private boolean error;
@@ -49,7 +49,7 @@ public class LoginEntity {
          * email : wangyu19970819@qq.com
          * header : http:dsads
          * sex : 1
-         * createTime : 2017-04-02 09:51:56
+         * createTime : 2017-04-bg2 09:51:56
          */
 
         private String uid;

@@ -368,6 +368,7 @@ public class upHeaderActivity extends AppCompatActivity {
     }
 
     public void upHead(String head) {
+        Log.d("upHeaderActivity", head);
         Retrofit retrofit = HttpControl.getInstance().getRetrofit();
         API api = retrofit.create(API.class);
         api.upHeader(head)

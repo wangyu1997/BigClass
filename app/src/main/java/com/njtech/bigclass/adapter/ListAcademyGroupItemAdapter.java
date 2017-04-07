@@ -14,6 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.ListView;
 
+import com.njtech.bigclass.AddClassActivity;
 import com.njtech.bigclass.HomePageActivity;
 import com.njtech.bigclass.R;
 import com.njtech.bigclass.Regist1Activity;
@@ -27,7 +28,7 @@ public class ListAcademyGroupItemAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private AppCompatActivity context;
     private ListAcademyListItemAdapter adapter;
-    private boolean flag = false;
+    private int flag = -1;
 
 
     public ListAcademyGroupItemAdapter(Context context, List<DataBean> objects) {
@@ -36,7 +37,7 @@ public class ListAcademyGroupItemAdapter extends BaseAdapter {
         this.objects = objects;
     }
 
-    public void setFlag(boolean flag) {
+    public void setFlag(int flag) {
         this.flag = flag;
     }
 
@@ -76,11 +77,16 @@ public class ListAcademyGroupItemAdapter extends BaseAdapter {
                 DataBean.InfoBean bean = objects.get(position);
                 int academy_id = Integer.parseInt(bean.getId());
                 String academy_name = bean.getName();
-                if (flag) {
+                if (flag == 2) {
                     Intent intent = new Intent(context, HomePageActivity.class);
                     intent.putExtra("academy_id", academy_id);
                     intent.putExtra("academy_name", academy_name);
                     context.setResult(HomePageActivity.Academy_res, intent);
+                } else if (flag == 3) {
+                    Intent intent = new Intent(context,AddClassActivity.class);
+                    intent.putExtra("academy_id", academy_id);
+                    intent.putExtra("academy_name", academy_name);
+                    context.setResult(AddClassActivity.Academy_res, intent);
                 } else {
                     Intent intent = new Intent(context, Regist1Activity.class);
                     intent.putExtra("academy_id", academy_id);

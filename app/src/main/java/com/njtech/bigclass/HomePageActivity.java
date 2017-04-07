@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -22,11 +22,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
+import com.njtech.bigclass.PopUpWindow.Action_PopUp;
 import com.njtech.bigclass.adapter.ListCourseItemAdapter;
 import com.njtech.bigclass.entity.courseShowEntity;
 import com.njtech.bigclass.utils.API;
 import com.njtech.bigclass.utils.AppManager;
 import com.njtech.bigclass.utils.HttpControl;
+import com.njtech.bigclass.utils.RecyclerOnItemClickListener;
 import com.njtech.bigclass.utils.ScrollUtil;
 
 import java.util.ArrayList;
@@ -121,6 +123,24 @@ public class HomePageActivity extends AppCompatActivity {
                 }
             }
         };
+        adapter.setRecyclerOnItemClickListener(new RecyclerOnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+                String courseid = datas.get(position - 1).getId();
+                Intent intent = new Intent(HomePageActivity.this, CourseInfoActivity.class);
+                intent.putExtra("cid", courseid);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                String courseid = datas.get(position - 1).getId();
+                Intent intent = new Intent(HomePageActivity.this, CourseInfoActivity.class);
+                intent.putExtra("cid", courseid);
+                startActivity(intent);
+            }
+        });
         progressBar.setVisibility(View.VISIBLE);
         adapter.setInterFace(interFace);
         courseList.setOnScrollListener(new ScrollUtil.inVisibleScorllListener() {
@@ -159,7 +179,7 @@ public class HomePageActivity extends AppCompatActivity {
         }
     }
 
-    public void getCourse(int aid) {
+    public  void getCourse(int aid) {
         Retrofit retrofit = HttpControl.getInstance().getRetrofit();
         API api = retrofit.create(API.class);
         api.getCourses(aid)
@@ -205,8 +225,9 @@ public class HomePageActivity extends AppCompatActivity {
         }
     }
 
+
     @OnClick(R.id.fab)
     public void onViewClicked() {
-        Toast.makeText(this, "添加课程", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(this, AddClassActivity.class));
     }
 }
