@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -116,6 +117,7 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             String time = object.getTime();
             String grade = object.getGpa();
             String number = object.getNumber();
+            String state = object.getState();
             if (holder instanceof ViewHolder) {
                 if (headUrl == null || !headUrl.contains("http://") || headUrl.isEmpty()) {
                     ((ViewHolder) holder).courseIcon.setImageResource(R.mipmap.logo);
@@ -126,6 +128,19 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 if (courseName.length() > 8) {
                     courseName = courseName.substring(0, 8);
                     courseName += "...";
+                }
+                switch (Integer.parseInt(state)) {
+                    case 0:
+                        ((ViewHolder) holder).courseState.setImageResource(R.mipmap.state_grey);
+                        break;
+                    case 1:
+                        ((ViewHolder) holder).courseState.setImageResource(R.mipmap.state_green);
+
+                        break;
+                    case 2:
+                        ((ViewHolder) holder).courseState.setImageResource(R.mipmap.state_red);
+
+                        break;
                 }
                 ((ViewHolder) holder).tvCoursename.setText(courseName);
                 ((ViewHolder) holder).tvTeacher.setText(teacherName);
@@ -195,7 +210,7 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         private TextView tvTime;
         private TextView tvGrade;
         private TextView tvStudentnumber;
-        private SimpleDraweeView courseState;
+        private ImageView courseState;
 
         public ViewHolder(View view) {
             super(view);
@@ -206,7 +221,7 @@ public class ListCourseItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             tvTime = (TextView) view.findViewById(R.id.tv_time);
             tvGrade = (TextView) view.findViewById(R.id.tv_grade);
             tvStudentnumber = (TextView) view.findViewById(R.id.tv_studentnumber);
-            courseState = (SimpleDraweeView) view.findViewById(R.id.course_state);
+            courseState = (ImageView) view.findViewById(R.id.course_state);
         }
     }
 }

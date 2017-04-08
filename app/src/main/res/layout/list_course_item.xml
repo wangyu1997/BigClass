@@ -203,7 +203,7 @@
 
     </LinearLayout>
 
-    <com.facebook.drawee.view.SimpleDraweeView
+    <ImageView
         android:id="@+id/course_state"
         android:layout_width="10dp"
         android:layout_height="10dp"
@@ -212,9 +212,5 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        fresco:actualImageScaleType="centerCrop"
-        fresco:placeholderImage="@mipmap/logo"
-        fresco:roundWithOverlayColor="@color/transprant"
-        fresco:roundedCornerRadius="10dp"
-        fresco:viewAspectRatio="1.4" />
+         />
 </RelativeLayout>
