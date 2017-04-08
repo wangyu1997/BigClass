@@ -1,5 +1,7 @@
 package com.njtech.bigclass.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by wangyu on 06/04/2017.
  */
@@ -39,7 +41,7 @@ public class Info_entity {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable {
         /**
          * id : 7
          * cid : 4

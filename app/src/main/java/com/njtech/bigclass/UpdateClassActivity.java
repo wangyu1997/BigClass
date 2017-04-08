@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -23,15 +24,16 @@ import com.njtech.bigclass.PopUpWindow.Clear_PopUp;
 import com.njtech.bigclass.PopUpWindow.CourseNum_PopUp;
 import com.njtech.bigclass.PopUpWindow.Day_PopUp;
 import com.njtech.bigclass.PopUpWindow.Place_PopUp;
+import com.njtech.bigclass.PopUpWindow.State_PopUp;
 import com.njtech.bigclass.PopUpWindow.Week_PopUp;
-import com.njtech.bigclass.entity.AddEntity;
+import com.njtech.bigclass.entity.ArrayEntity;
+import com.njtech.bigclass.entity.Info_entity;
 import com.njtech.bigclass.utils.API;
 import com.njtech.bigclass.utils.AppManager;
 import com.njtech.bigclass.utils.HttpControl;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,13 +48,14 @@ import static rx.schedulers.Schedulers.io;
  * Created by wangyu on 06/04/2017.
  */
 
-public class AddClassActivity extends AppCompatActivity {
-    @BindView(R.id.tv_academy)
-    TextView tvAcademy;
-    @BindView(R.id.tv_coursename)
-    TextView tvCoursename;
-    @BindView(R.id.tv_gpa)
-    TextView tvGpa;
+public class UpdateClassActivity extends AppCompatActivity {
+
+    public static final int Academy_res = 605;
+    private static final int Academy_req = 635;
+    public static final int Course_res = 601;
+    private static final int Course_req = 632;
+    @BindView(R.id.tv_state)
+    TextView tvState;
     @BindView(R.id.tv_wifi)
     TextView tvWifi;
     @BindView(R.id.tv_week)
@@ -63,29 +66,22 @@ public class AddClassActivity extends AppCompatActivity {
     TextView tvNum;
     @BindView(R.id.tv_building)
     TextView tvBuilding;
+    @BindView(R.id.tv_room)
+    EditText tvRoom;
     @BindView(R.id.tv_content)
     TextView tvContent;
     @BindView(R.id.btn_create)
     Button btnCreate;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.teacher_name)
-    TextView teacherName;
+    @BindView(R.id.course_name)
+    TextView courseName;
     @BindView(R.id.head_layout)
     LinearLayout headLayout;
-    public static final int Academy_res = 605;
-    private static final int Academy_req = 635;
-    public static final int Course_res = 601;
-    private static final int Course_req = 632;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
-    @BindView(R.id.tv_room)
-    EditText tvRoom;
-    private String Academy_name;
-    private int Academy_id;
-    private int course_id;
+
     private String course_name;
-    private String gpa;
     private WifiManager wifi;
     private String ssid;
     private String bssid;
@@ -94,63 +90,94 @@ public class AddClassActivity extends AppCompatActivity {
     private String week_info;
     private String day_info;
     private CourseNum_PopUp courseNum_popUp1, courseNum_popUp2;
-    private Clear_PopUp clear_popUp;
     private Place_PopUp place_popUp;
     private String coursenum1, coursenum2;
     private int course_1, course_2;
     private String building, room;
-
+    private Info_entity.DataBean dataBean;
+    private String state;
+    private String time, place;
+    private int cid;
+    private String rawstate, raw_wifi, raw_time, raw_place, raw_content;
+    private State_PopUp state_popUp;
+    private String content;
+    private Clear_PopUp clear_popUp;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppManager.getAppManager().addActivity(this);
-        setContentView(R.layout.course_create);
+        setContentView(R.layout.course_update);
         ButterKnife.bind(this);
         init();
     }
 
     public void init() {
-        hideInput(AddClassActivity.this,tvRoom);
-        Academy_id = -1;
-        Academy_name = "";
-        course_name = "";
-        gpa = "";
-        course_id = -1;
+        hideInput(this, tvRoom);
+        dataBean = (Info_entity.DataBean) getIntent().getBundleExtra("bundle").getSerializable("data");
+        cid = Integer.parseInt(dataBean.getId());
+        course_name = dataBean.getC_name();
+        raw_wifi = dataBean.getWifi();
+        raw_time = dataBean.getTime();
+        raw_place = dataBean.getPlace();
+        raw_content = dataBean.getContent();
+        String[] info = dataBean.getTime().split(" ");
+        String week_info = info[0];
+        String day_info = info[1];
+        int course_1 = Integer.parseInt(info[2].split("/")[0]);
+        int course_2 = Integer.parseInt(info[2].split("/")[1]);
+        String coursenum1 = "第" + course_1 + "节";
+        String coursenum2 = "第" + course_2 + "节";
+        String[] placeInfo = dataBean.getPlace().split(" ");
+        String building = placeInfo[0];
+        String room = dataBean.getPlace().substring(dataBean.getPlace().indexOf(building) + 3);
+        courseName.setText(course_name);
+        rawstate = dataBean.getState();
+        if (dataBean.getState().equals("0")) {
+            tvState.setText("未开始");
+        } else if (dataBean.getState().equals("1")) {
+            tvState.setText("开始上课");
+        } else if (dataBean.getState().equals("2")) {
+            tvState.setText("结束课程");
+        }
+        raw_content = dataBean.getContent();
+        tvWeek.setText(week_info);
+        tvDay.setText(day_info);
+        tvNum.setText(coursenum1 + "到" + coursenum2);
+        tvBuilding.setText(building);
+        tvRoom.setText(room);
+        tvWifi.setText(raw_wifi);
+        tvContent.setText(raw_content);
+        this.course_name = "";
+        state = "";
         ssid = "";
         bssid = "";
-        week_info = "第1周";
-        day_info = "周一";
-        coursenum1 = "第1节";
-        coursenum2 = "第2节";
-        course_1 = 1;
-        course_2 = 2;
-        room = "";
-        building = "";
+        this.week_info = "";
+        this.day_info = "";
+        this.coursenum1 = "";
+        this.coursenum2 = "";
+        this.course_1 = -1;
+        this.course_2 = -1;
+        this.room = "";
+        this.building = "";
+        this.time = "";
+        this.place = "";
+        content = "";
         tvWifi.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                clear_popUp = new Clear_PopUp(AddClassActivity.this, new ClearClick());
-                clear_popUp.showAtLocation(AddClassActivity.this.findViewById(R.id.class_add), Gravity.BOTTOM, 0, 0);
+                clear_popUp = new Clear_PopUp(UpdateClassActivity.this, new UpdateClassActivity.ClearClick());
+                clear_popUp.showAtLocation(UpdateClassActivity.this.findViewById(R.id.class_update), Gravity.BOTTOM, 0, 0);
                 return false;
             }
         });
     }
 
-    /**
-     * 强制隐藏输入法键盘
-     */
-    private void hideInput(Context context, View view){
-        InputMethodManager inputMethodManager =
-                (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
-    public class ClearClick implements View.OnClickListener{
+    public class ClearClick implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
+            switch (v.getId()) {
                 case R.id.comfirm_btn:
                     ssid = "";
                     bssid = "";
@@ -161,47 +188,31 @@ public class AddClassActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick({R.id.tv_academy, R.id.tv_coursename, R.id.tv_gpa, R.id.tv_wifi, R.id.tv_week, R.id.tv_day, R.id.tv_num, R.id.tv_building, R.id.tv_room, R.id.tv_content, R.id.btn_create})
+    @OnClick({R.id.tv_wifi, R.id.tv_week, R.id.tv_day, R.id.tv_num, R.id.tv_building, R.id.tv_room, R.id.tv_content, R.id.btn_create})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.tv_academy:
-                Intent intent = new Intent(this, AcademySelectActivity.class);
-                intent.putExtra("flag", 3);
-                startActivityForResult(intent, Academy_req);
-                break;
-            case R.id.tv_coursename:
-                if (Academy_id == -1) {
-                    Toast.makeText(this, "请先选择学院", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intent1 = new Intent(this, CourseSelectActivity.class);
-                    intent1.putExtra("aid", Academy_id);
-                    startActivityForResult(intent1, Course_req);
-                }
-                break;
-            case R.id.tv_gpa:
-                break;
             case R.id.tv_wifi:
                 getWifi();
                 break;
             case R.id.tv_week:
                 week_popUp = new Week_PopUp(this, new WeekClick(), new weekListener());
                 week_info = Week_PopUp.data[Week_PopUp.DEFAULT_VALUE];
-                week_popUp.showAtLocation(this.findViewById(R.id.class_add), Gravity.BOTTOM, 0, 0);
+                week_popUp.showAtLocation(this.findViewById(R.id.class_update), Gravity.BOTTOM, 0, 0);
                 break;
             case R.id.tv_day:
                 day_popUp = new Day_PopUp(this, new DayClick(), new dayListener());
                 day_info = Day_PopUp.data[Day_PopUp.DEFAULT_VALUE];
-                day_popUp.showAtLocation(this.findViewById(R.id.class_add), Gravity.BOTTOM, 0, 0);
+                day_popUp.showAtLocation(this.findViewById(R.id.class_update), Gravity.BOTTOM, 0, 0);
                 break;
             case R.id.tv_num:
                 courseNum_popUp1 = new CourseNum_PopUp(true, this, new course1Click(), new course1Listener());
                 coursenum1 = CourseNum_PopUp.data[CourseNum_PopUp.DEFAULT_VALUE];
-                courseNum_popUp1.showAtLocation(this.findViewById(R.id.class_add), Gravity.BOTTOM, 0, 0);
+                courseNum_popUp1.showAtLocation(this.findViewById(R.id.class_update), Gravity.BOTTOM, 0, 0);
                 break;
             case R.id.tv_building:
                 place_popUp = new Place_PopUp(this, new PlaceClick(), new placeListener());
                 building = Place_PopUp.data[Place_PopUp.DEFAULT_VALUE];
-                place_popUp.showAtLocation(this.findViewById(R.id.class_add), Gravity.BOTTOM, 0, 0);
+                place_popUp.showAtLocation(this.findViewById(R.id.class_update), Gravity.BOTTOM, 0, 0);
                 break;
             case R.id.tv_content:
                 break;
@@ -213,71 +224,21 @@ public class AddClassActivity extends AppCompatActivity {
 
 
     public void create() {
-        if (Academy_id == -1 || Academy_name.equals("")) {
-            Toast.makeText(this, "请选择学院", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (course_name.equals("") || course_id == -1) {
-            Toast.makeText(this, "请选择课程", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (building.equals("教学楼")) {
-            Toast.makeText(this, "请选择教学楼", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        String room = tvRoom.getText().toString().trim();
+        room = tvRoom.getText().toString().trim();
         if (room.equals("")) {
             Toast.makeText(this, "请输入教室", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (room.length() > 4||room.length()<1) {
+        if (room.length() > 4 || room.length() < 1) {
             Toast.makeText(this, "教室格式不正确，请重新输入", Toast.LENGTH_SHORT).show();
             return;
         }
-        Map<String, Object> map = new HashMap<>();
-        if (!ssid.isEmpty() && !bssid.isEmpty()) {
-            map.put("wifi", ssid);
-            map.put("bssid", bssid);
+        if (!isChange()) {
+            Toast.makeText(this, "没有改动信息,请直接返回上一页", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            update(getMap());
         }
-        map.put("cid", course_id);
-        String time = week_info + " " + day_info + " " + course_1 + "/" + course_2;
-        map.put("time", time);
-        map.put("content", "这是测试课程");
-        map.put("place", building+" "+ room);
-        addCourse(map);
-    }
-
-    public void addCourse(Map<String, Object> map) {
-        progressBar.setVisibility(View.VISIBLE);
-        Toast.makeText(this, "正在添加课程，请稍后...", Toast.LENGTH_SHORT).show();
-        Retrofit retrofit = HttpControl.getInstance().getRetrofit();
-        API api = retrofit.create(API.class);
-        api.addCourse(map)
-                .subscribeOn(io())
-                .unsubscribeOn(io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<AddEntity>() {
-                    @Override
-                    public void onCompleted() {
-                        progressBar.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        progressBar.setVisibility(View.GONE);
-                        Toast.makeText(AddClassActivity.this, "添加课程失败", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onNext(AddEntity addEntity) {
-                        if (addEntity.isError()) {
-                            Toast.makeText(AddClassActivity.this, "添加课程失败", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(AddClassActivity.this, "添加课程成功", Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
-                    }
-                });
     }
 
     public void getWifi() {
@@ -298,6 +259,20 @@ public class AddClassActivity extends AppCompatActivity {
             }
         }
         progressBar.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.tv_state)
+    public void onViewClicked() {
+        String state = tvState.getText().toString();
+        state_popUp = new State_PopUp(UpdateClassActivity.this, new Pop_onclick());
+        if (state.equals("未开始"))
+            state_popUp.disableReset();
+        if (state.equals("开始上课"))
+            state_popUp.disableStart();
+        if (state.equals("结束课程"))
+            state_popUp.disableEnd();
+        state_popUp.showAtLocation(findViewById(R.id.class_update), Gravity.BOTTOM, 0, 0);
+
     }
 
     public class weekListener implements NumberPicker.OnValueChangeListener {
@@ -324,6 +299,29 @@ public class AddClassActivity extends AppCompatActivity {
                     break;
 
             }
+        }
+    }
+
+
+    public class Pop_onclick implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.reset_btn:
+                    state = "0";
+                    tvState.setText("未开始");
+                    break;
+                case R.id.start_btn:
+                    state = "1";
+                    tvState.setText("开始上课");
+                    break;
+                case R.id.end_btn:
+                    state = "2";
+                    tvState.setText("结束课程");
+                    break;
+            }
+            state_popUp.dismiss();
         }
     }
 
@@ -403,9 +401,9 @@ public class AddClassActivity extends AppCompatActivity {
                 case R.id.pop_confirm:
                     if (day_info != null) {
                         courseNum_popUp1.dismiss();
-                        courseNum_popUp2 = new CourseNum_PopUp(false, AddClassActivity.this, new course2Click(), new course2Listener());
+                        courseNum_popUp2 = new CourseNum_PopUp(false, UpdateClassActivity.this, new course2Click(), new course2Listener());
                         coursenum2 = CourseNum_PopUp.data[CourseNum_PopUp.DEFAULT_VALUE];
-                        courseNum_popUp2.showAtLocation(AddClassActivity.this.findViewById(R.id.class_add), Gravity.BOTTOM, 0, 0);
+                        courseNum_popUp2.showAtLocation(UpdateClassActivity.this.findViewById(R.id.class_update), Gravity.BOTTOM, 0, 0);
                     }
                     break;
 
@@ -437,7 +435,7 @@ public class AddClassActivity extends AppCompatActivity {
                 case R.id.pop_confirm:
                     if (day_info != null) {
                         if (course_2 < course_1) {
-                            Toast.makeText(AddClassActivity.this, "结束时间不能早于开始时间", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UpdateClassActivity.this, "结束时间不能早于开始时间", Toast.LENGTH_SHORT).show();
                         } else {
                             courseNum_popUp2.dismiss();
                             tvNum.setText(coursenum1 + "到" + coursenum2);
@@ -449,34 +447,100 @@ public class AddClassActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Academy_req && resultCode == Academy_res) {
-            Academy_name = data.getStringExtra("academy_name");
-            Academy_id = data.getIntExtra("academy_id", -1);
-            if (Academy_id == -1) {
-                Academy_name = "";
-            } else {
-                tvAcademy.setText(Academy_name);
-            }
-            course_id = -1;
-            course_name = "";
-            gpa = "";
-            tvCoursename.setText("");
-            tvGpa.setText("");
-        }
-        if (requestCode == Course_req && resultCode == Course_res) {
-            course_name = data.getStringExtra("course_name");
-            course_id = data.getIntExtra("course_id", -1);
-            gpa = data.getStringExtra("course_gpa");
-            if (course_id == -1) {
-                course_name = "";
-                gpa = "";
-            } else {
-                tvCoursename.setText(course_name);
-                tvGpa.setText(gpa);
-            }
-        }
+
+    public void update(Map<String, Object> map) {
+        progressBar.setVisibility(View.VISIBLE);
+        Toast.makeText(this, "正在修改,请稍后...", Toast.LENGTH_SHORT).show();
+        Retrofit retrofit = HttpControl.getInstance().getRetrofit();
+        API api = retrofit.create(API.class);
+        api.updateCourse(map)
+                .subscribeOn(io())
+                .unsubscribeOn(io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ArrayEntity>() {
+                    @Override
+                    public void onCompleted() {
+                        progressBar.setVisibility(View.GONE);
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(UpdateClassActivity.this, "修改失败请稍后再试...", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                        finish();
+                    }
+
+                    @Override
+                    public void onNext(ArrayEntity arrayEntity) {
+                        if (arrayEntity.isError()) {
+                            Toast.makeText(UpdateClassActivity.this, "修改失败请稍后再试...", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(UpdateClassActivity.this, "修改成功，正在刷新信息", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
     }
+
+    /**
+     * 强制隐藏输入法键盘
+     */
+    private void hideInput(Context context, View view) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public boolean isChange() {
+        if (week_info.isEmpty() || day_info.isEmpty() || course_1 == -1 || course_2 == -1)
+            time = "";
+        else
+            time = week_info + " " + day_info + " " + course_1 + "/" + course_2;
+        if (building.isEmpty() || room.isEmpty()) {
+            place = "";
+        } else
+            place = building + " " + room;
+        Log.d("UpdateClassActivity", "state:" + state + " raw: " + rawstate + "\n"
+                + "bssid:" + bssid + "\n"
+                + "time:" + time + "  raw:" + raw_time + "\n"
+                + "place:" + place + "  raw:" + raw_place + '\n'
+                + "content:" + content + "  raw:" + raw_content + "\n");
+        if ((state.isEmpty() || state.equals(rawstate)) && (ssid.equals(raw_wifi)) && (time.isEmpty() || time.equals(raw_time)) && (place.isEmpty() || place.equals(raw_place)) && (content.isEmpty() || content.equals(raw_content)))
+            return false;
+        return true;
+    }
+
+    public Map<String, Object> getMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", cid);
+        if (!(state.isEmpty() || state.equals(rawstate)))
+            map.put("state", state);
+        if (!(ssid.equals(raw_wifi))) {
+            if (ssid.isEmpty() || bssid.isEmpty()) {
+                map.put("wifi", "暂未指定");
+                map.put("bssid", "-1");
+            } else {
+                map.put("wifi", ssid);
+                map.put("bssid", bssid);
+            }
+        }
+        if (!(time.isEmpty() || time.equals(raw_time)))
+            map.put("time", time);
+        if (!(place.isEmpty() || place.equals(raw_place)))
+            map.put("place", place);
+        if (!(content.isEmpty() || content.equals(raw_content)))
+            map.put("content", content);
+
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            //Map.entry<Integer,String> 映射项（键-值对）  有几个方法：用上面的名字entry
+            //entry.getKey() ;entry.getValue(); entry.setValue();
+            //map.entrySet()  返回此映射中包含的映射关系的 Set视图。
+            Log.d("UpdateClassActivity", "key= " + entry.getKey() + " and value= "
+                    + entry.getValue());
+        }
+        return map;
+    }
+
 }
 

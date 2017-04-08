@@ -358,7 +358,7 @@ public class CourseInfoActivity extends AppCompatActivity {
                 signBtn.setText("结束签到");
             }
         }else {
-            signBtn.setText("课程已结束");
+            signBtn.setText("已结束");
             signBtn.setTextColor(getResources().getColor(R.color.textcolor4));
             signBtn.setEnabled(false);
         }
@@ -391,6 +391,14 @@ public class CourseInfoActivity extends AppCompatActivity {
                     action_popUp.dismiss();
                     comfirm_popUp = new Comfirm_PopUp(CourseInfoActivity.this, new Pop_onclick());
                     comfirm_popUp.showAtLocation(findViewById(R.id.course_info), Gravity.BOTTOM, 0, 0);
+                    break;
+                case R.id.change_btn:
+                    Intent intent = new Intent(CourseInfoActivity.this,UpdateClassActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("data",info_Data);
+                    intent.putExtra("bundle",bundle);
+                    startActivity(intent);
+                    action_popUp.dismiss();
                     break;
                 case R.id.comfirm_btn:
                     comfirm_popUp.dismiss();
