@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/home"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg"
-    android:fitsSystemWindows="true"
-    tools:context=".PersonActivity">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/home"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg"
+                android:fitsSystemWindows="true"
+                android:hardwareAccelerated="false"
+                tools:context=".PersonActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -28,7 +29,7 @@
             android:fontFamily="sans-serif"
             android:text="@string/forget_tool"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"/>
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
@@ -57,7 +58,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:src="@mipmap/gengduo" />
+                    android:src="@mipmap/gengduo"/>
             </LinearLayout>
 
             <LinearLayout
@@ -72,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:src="@mipmap/qiandao" />
+                    android:src="@mipmap/qiandao"/>
             </LinearLayout>
 
             <LinearLayout
@@ -87,7 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:src="@mipmap/yonghu" />
+                    android:src="@mipmap/yonghu"/>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
