@@ -349,12 +349,15 @@ public class CourseInfoActivity extends AppCompatActivity {
         int flag = Integer.parseInt(dataBean.getSignFlag());
         if (state==0){
             signBtn.setEnabled(true);
+            signBtn.setTextColor(getResources().getColor(R.color.red));
             signBtn.setText("开始上课");
         }else if (state==1){
             signBtn.setEnabled(true);
             if (flag == 0 || flag == 2) {
+                signBtn.setTextColor(getResources().getColor(R.color.red));
                 signBtn.setText("发起签到");
             } else if (flag == 1) {
+                signBtn.setTextColor(getResources().getColor(R.color.red));
                 signBtn.setText("结束签到");
             }
         }else {
