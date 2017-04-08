@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BigClass</string>
+    <string name="app_name">BigClass-Teacher</string>
     <string name="login">LOG IN</string>
     <string name="regist">SIGN UP</string>
     <string name="forgetpass">忘记密码</string>
