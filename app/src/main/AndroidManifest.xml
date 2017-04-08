@@ -46,5 +46,6 @@
         <activity android:name=".WifiActivity">
         </activity>
         <activity android:name=".SignHistoryActivity"></activity>
+        <activity android:name=".UpdateClassActivity"></activity>
     </application>
 </manifest>
