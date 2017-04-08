@@ -130,7 +130,7 @@ public class UpdateClassActivity extends AppCompatActivity {
         String coursenum2 = "第" + course_2 + "节";
         String[] placeInfo = dataBean.getPlace().split(" ");
         String building = placeInfo[0];
-        String room = dataBean.getPlace().substring(dataBean.getPlace().indexOf(building) + 3);
+        String room = dataBean.getPlace().substring(dataBean.getPlace().indexOf(building) + building.length()+1);
         courseName.setText(course_name);
         rawstate = dataBean.getState();
         if (dataBean.getState().equals("0")) {
@@ -150,8 +150,8 @@ public class UpdateClassActivity extends AppCompatActivity {
         tvContent.setText(raw_content);
         this.course_name = "";
         state = "";
-        ssid = "";
-        bssid = "";
+        ssid = "暂未指定";
+        bssid = "-1";
         this.week_info = "";
         this.day_info = "";
         this.coursenum1 = "";
@@ -501,11 +501,6 @@ public class UpdateClassActivity extends AppCompatActivity {
             place = "";
         } else
             place = building + " " + room;
-        Log.d("UpdateClassActivity", "state:" + state + " raw: " + rawstate + "\n"
-                + "bssid:" + bssid + "\n"
-                + "time:" + time + "  raw:" + raw_time + "\n"
-                + "place:" + place + "  raw:" + raw_place + '\n'
-                + "content:" + content + "  raw:" + raw_content + "\n");
         if ((state.isEmpty() || state.equals(rawstate)) && (ssid.equals(raw_wifi)) && (time.isEmpty() || time.equals(raw_time)) && (place.isEmpty() || place.equals(raw_place)) && (content.isEmpty() || content.equals(raw_content)))
             return false;
         return true;
@@ -531,14 +526,6 @@ public class UpdateClassActivity extends AppCompatActivity {
             map.put("place", place);
         if (!(content.isEmpty() || content.equals(raw_content)))
             map.put("content", content);
-
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            //Map.entry<Integer,String> 映射项（键-值对）  有几个方法：用上面的名字entry
-            //entry.getKey() ;entry.getValue(); entry.setValue();
-            //map.entrySet()  返回此映射中包含的映射关系的 Set视图。
-            Log.d("UpdateClassActivity", "key= " + entry.getKey() + " and value= "
-                    + entry.getValue());
-        }
         return map;
     }
 
