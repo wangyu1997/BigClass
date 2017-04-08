@@ -30,6 +30,7 @@ import com.njtech.bigclass.entity.ObjEntity;
 import com.njtech.bigclass.utils.API;
 import com.njtech.bigclass.utils.AppManager;
 import com.njtech.bigclass.utils.HttpControl;
+import com.njtech.bigclass.utils.MyApplication;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -346,10 +347,20 @@ public class CourseInfoActivity extends AppCompatActivity {
         tvAcademy.setText(dataBean.getA_name().substring(0, dataBean.getA_name().indexOf("学院")));
         courseContent.setText(dataBean.getContent());
         int flag = Integer.parseInt(dataBean.getSignFlag());
-        if (flag == 0 || flag == 2) {
-            signBtn.setText("发起签到");
-        } else if (flag == 1) {
-            signBtn.setText("结束签到");
+        if (state==0){
+            signBtn.setEnabled(true);
+            signBtn.setText("开始上课");
+        }else if (state==1){
+            signBtn.setEnabled(true);
+            if (flag == 0 || flag == 2) {
+                signBtn.setText("发起签到");
+            } else if (flag == 1) {
+                signBtn.setText("结束签到");
+            }
+        }else {
+            signBtn.setText("课程已结束");
+            signBtn.setTextColor(getResources().getColor(R.color.textcolor4));
+            signBtn.setEnabled(false);
         }
     }
 
@@ -366,7 +377,6 @@ public class CourseInfoActivity extends AppCompatActivity {
                             map.put("state","1");
                             map.put("id",cid);
                             update(map);
-
                         }
                         if(info_Data.getState().equals("1")){
                             map = new HashMap<>();
@@ -438,7 +448,14 @@ public class CourseInfoActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.sign_btn:
+                if (signBtn.getText().toString().contains("签到"))
                 sign(cid);
+                else if (signBtn.getText().toString().equals("开始上课")){
+                    map = new HashMap<>();
+                    map.put("state","1");
+                    map.put("id",cid);
+                    update(map);
+                }
                 break;
         }
     }

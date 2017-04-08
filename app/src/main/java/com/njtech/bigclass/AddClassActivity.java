@@ -198,7 +198,7 @@ public class AddClassActivity extends AppCompatActivity {
             return;
         }
         Map<String, Object> map = new HashMap<>();
-        if (ssid.isEmpty() && bssid.isEmpty()) {
+        if (!ssid.isEmpty() && !bssid.isEmpty()) {
             map.put("wifi", ssid);
             map.put("bssid", bssid);
         }
